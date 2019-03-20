@@ -1,0 +1,428 @@
+_menuPool = NativeUI.CreatePool()
+mainMenu = NativeUI.CreateMenu("SimpleMenu", "Made By: ~b~Agony")
+_menuPool:Add(mainMenu)
+
+bool = false
+
+cars = {
+    "adder",
+    "airbus",
+    "airtug",
+    "akuma",
+    "ambulance",
+    "annihilator",
+    "armytanker",
+    "armytrailer",
+    "armytrailer2",
+    "asea",
+    "asea2",
+    "asterope",
+    "bagger",
+    "baletrailer",
+    "baller",
+    "baller2",
+    "banshee",
+    "barracks",
+    "barracks2",
+    "bati",
+    "bati2",
+    "benson",
+    "bfinjection",
+    "biff",
+    "bison",
+    "bison2",
+    "bison3",
+    "bjxl",
+    "blazer",
+    "blazer2",
+    "blazer3",
+    "blimp",
+    "blista",
+    "bmx",
+    "boattrailer",
+    "bobcatxl",
+    "bodhi2",
+    "boxville",
+    "boxville2",
+    "boxville3",
+    "buccaneer",
+    "buffalo",
+    "buffalo2",
+    "bulldozer",
+    "bullet",
+    "burrito",
+    "burrito2",
+    "burrito3",
+    "burrito4",
+    "burrito5",
+    "bus",
+    "buzzard",
+    "buzzard2",
+    "cablecar",
+    "caddy",
+    "caddy2",
+    "camper",
+    "carbonizzare",
+    "carbonrs",
+    "cargobob",
+    "cargobob2",
+    "cargobob3",
+    "cargoplane",
+    "cavalcade",
+    "cavalcade2",
+    "cheetah",
+    "coach",
+    "cogcabrio",
+    "comet2",
+    "coquette",
+    "cruiser",
+    "crusader",
+    "cuban800",
+    "cutter",
+    "daemon",
+    "dilettante",
+    "dilettante2",
+    "dinghy",
+    "dinghy2",
+    "dloader",
+    "docktrailer",
+    "docktug",
+    "dominator",
+    "double",
+    "dubsta",
+    "dubsta2",
+    "dump",
+    "dune",
+    "dune2",
+    "duster",
+    "elegy2",
+    "emperor",
+    "emperor2",
+    "emperor3",
+    "entityxf",
+    "exemplar",
+    "f620",
+    "faggio2",
+    "fbi",
+    "fbi2",
+    "felon",
+    "felon2",
+    "feltzer2",
+    "firetruk",
+    "fixter",
+    "flatbed",
+    "forklift",
+    "fq2",
+    "freight",
+    "freightcar",
+    "freightcont1",
+    "freightcont2",
+    "freightgrain",
+    "freighttrailer",
+    "frogger",
+    "frogger2",
+    "fugitive",
+    "fusilade",
+    "futo",
+    "gauntlet",
+    "gburrito",
+    "graintrailer",
+    "granger",
+    "gresley",
+    "habanero",
+    "handler",
+    "hauler",
+    "hexer",
+    "hotknife",
+    "infernus",
+    "ingot",
+    "intruder",
+    "issi2",
+    "jackal",
+    "jb700",
+    "jet",
+    "jetmax",
+    "journey",
+    "khamelion",
+    "landstalker",
+    "lazer",
+    "lguard",
+    "luxor",
+    "mammatus",
+    "manana",
+    "marquis",
+    "maverick",
+    "mesa",
+    "mesa2",
+    "mesa3",
+    "metrotrain",
+    "minivan",
+    "mixer",
+    "mixer2",
+    "monroe",
+    "mower",
+    "mule",
+    "mule2",
+    "nemesis",
+    "ninef",
+    "ninef2",
+    "oracle",
+    "oracle2",
+    "packer",
+    "packer",
+    "patriot",
+    "pbus",
+    "pcj",
+    "penumbra",
+    "peyote",
+    "phantom",
+    "phoenix",
+    "picador",
+    "police",
+    "police2",
+    "police3",
+    "police4",
+    "policeb",
+    "policet",
+    "polmav",
+    "pony",
+    "pony2",
+    "pounder",
+    "prairie",
+    "pranger",
+    "predator",
+    "premier",
+    "primo",
+    "proptrailer",
+    "radi",
+    "raketrailer",
+    "rancherxl",
+    "rancherxl2",
+    "rapidgt",
+    "rapidgt2",
+    "ratloader",
+    "rebel",
+    "rebel2",
+    "regina",
+    "rentalbus",
+    "rhino",
+    "riot",
+    "ripley",
+    "rocoto",
+    "romero",
+    "rubble",
+    "ruffian",
+    "ruiner",
+    "rampo",
+    "rampo2",
+    "sabregt",
+    "sadler",
+    "sadler2",
+    "sanchez",
+    "sanchez2",
+    "sandking",
+    "sandking2",
+    "schafter2",
+    "schwarzer",
+    "scorcher",
+    "scrap",
+    "seashark",
+    "seashark2",
+    "seminole",
+    "sentinel",
+    "sentinel2",
+    "serrano",
+    "shamal",
+    "sheriff",
+    "sheriff2",
+    "skylift",
+    "speedo",
+    "speedo2",
+    "squalo",
+    "stainer",
+    "stinger",
+    "stingergt",
+    "stockade",
+    "stockade3",
+    "stratum",
+    "stretch",
+    "stunt",
+    "submersible",
+    "sultan",
+    "suntrap",
+    "superd",
+    "surano",
+    "surfer",
+    "surfer2",
+    "surge",
+    "taco",
+    "tailgater",
+    "tanker",
+    "tankercar",
+    "taxi",
+    "tiptruck",
+    "titan",
+    "tornado",
+    "tornado2",
+    "tornado3",
+    "tornado4",
+    "tourbus",
+    "towtruck",
+    "towtruck2",
+    "tr2",
+    "tr3",
+    "tr4",
+    "tractor",
+    "tractor2",
+    "tractor3",
+    "trailerlogs",
+    "trailers",
+    "trailers2",
+    "trailers3",
+    "trailersmall",
+    "trash",
+    "trflat",
+    "trbike",
+    "trbike2",
+    "trbike3",
+    "tropic",
+    "tvtrailer",
+    "utillitruck",
+    "utillitruck2",
+    "utillitruck3",
+    "vacca",
+    "vader",
+    "velum",
+    "vlgero",
+    "voltic",
+    "voodoo2",
+    "washington",
+    "youga",
+    "zion",
+    "zion2",
+    "ztype",
+}
+function Cars(menu)
+  local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu")
+  local carsList = NativeUI.CreateListItem("Spawn Cars", cars, 1)
+    submenu.OnListSelect = function(sender, item, index)
+        if item == carsList then
+            local selectedCar = item:IndexToItem(index)
+            spawnCar(selectedCar)
+            notify("Car Spawned: "..selectedCar)
+        end
+    end 
+seats = {-1,0,1,2}
+    local seat = NativeUI.CreateSliderItem("Change Seats", seats, 1)
+    submenu.OnSliderChange = function(sender, item, index)
+      if item == seat then
+        vehSeat = item:IndexToItem(index)
+        local pedsCar = GetVehiclePedIsIn(GetPlayerPed(-1),false)
+        SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
+      end
+    end
+    submenu:AddItem(carsList)
+    submenu:AddItem(seat)
+end
+
+weapons = {
+	"weapon_knife",
+  "weapon_knightstick",
+  "weapon_hammer",
+  "weapon_bat",
+  "weapon_crowbar",
+  "weapon_golfclub",
+  "weapon_pistol",
+  "weapon_combatpistol",
+  "weapon_appistol",
+  "weapon_pistol50",
+  "weapon_microsmg",
+  "weapon_smg",
+  "weapon_assaultsmg",
+  "weapon_assaultrifle",
+  "weapon_carbinerifle",
+  "weapon_advancedrifle",
+  "weapon_pumpshotgun",
+  "weapon_fireextinguisher",
+  "weapon_flare",
+  "weapon_snspistol",
+  "weapon_heavypistol",
+  "weapon_bullpuprifle",
+  "weapon_dagger",
+  "weapon_vintagepistol",
+  "weapon_firework",
+  "weapon_flaregun",
+  "weapon_marksmanpistol",
+  "weapon_knuckle",
+  "weapon_hatchet",
+  "weapon_switchblade",
+  "weapon_revolver",
+  "weapon_battleaxe",
+  "weapon_minismg",
+  "weapon_poolcue",
+  "weapon_wrench",
+}
+
+function Weapons(menu)
+  local submenu = _menuPool:AddSubMenu(menu, "Weapons Menu") 
+  local gunsList = NativeUI.CreateListItem("Get Guns", weapons, 1)
+    submenu.OnListSelect = function(sender, item, index)  
+        if item == gunsList then
+            local selectedGun = item:IndexToItem(index)
+            giveWeapon(selectedGun)
+            notify("Gave Weapon: "..selectedGun)
+      end
+    end
+      local click = NativeUI.CreateItem("~r~Clear Weapon(s)", "Clears Peds Weapons")
+      submenu.OnItemSelect = function (sender, item, index)
+        if item == click then
+          RemoveAllPedWeapons(GetPlayerPed(-1), true)
+          notify("~r~Removed All Weapon(s)")
+    end
+      
+  end
+  submenu:AddItem(gunsList)
+  submenu:AddItem(click)
+end
+
+Cars(mainMenu)
+Weapons(mainMenu)
+_menuPool:RefreshIndex()
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        _menuPool:ProcessMenus()
+        if IsControlJustPressed(1, 167) then
+            mainMenu:Visible(not mainMenu:Visible())
+        end
+    end
+end)
+
+
+function notify(text)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(text)
+    DrawNotification(true, true)
+end
+
+function giveWeapon(hash)
+    GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(hash), 999, false, false)
+end
+
+function spawnCar(car)
+    local car = GetHashKey(car)
+
+    RequestModel(car)
+    while not HasModelLoaded(car) do
+        RequestModel(car)
+        Citizen.Wait(50)
+    end
+
+    local x, y, z = table.unpack(GetEntityCoords(PlayerPedId(), false))
+    local vehicle = CreateVehicle(car, x + 2, y + 2, z + 1, GetEntityHeading(PlayerPedId()), true, false)
+    SetPedIntoVehicle(PlayerPedId(), vehicle, -1)
+    
+    SetEntityAsNoLongerNeeded(vehicle)
+    SetModelAsNoLongerNeeded(vehicleName)
+end
