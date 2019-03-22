@@ -22,3 +22,4 @@ INSTALL INSTRUCTIONS:
 - Set Ped Armour ver 0.2.2
 - Heal Ped ver 0.2.2
 - Seat Swapping ver 0.2
+- Cleaner UI ver 0.2
