@@ -12,3 +12,13 @@ INSTALL INSTRUCTIONS:
       * - start SimpleMenu
       
   4: Do not change the name of any of the folders to make it easier. server.cfg is case sensitive
+
+
+# Changelog
+
+- Ped Changing ver 0.2.4
+- Cleaner UI ver 0.2.3
+- Player Options Menu Added ver 0.2.3
+- Set Ped Armour ver 0.2.2
+- Heal Ped ver 0.2.2
+- Seat Swapping ver 0.2
