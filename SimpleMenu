@@ -1,3 +1,5 @@
+--Made by Agony
+
 _menuPool = NativeUI.CreatePool()
 mainMenu = NativeUI.CreateMenu("SimpleMenu", "Made By: ~b~Agony")
 _menuPool:Add(mainMenu)
