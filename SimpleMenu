@@ -314,7 +314,7 @@ cars = {
     "ztype",
 }
 function Cars(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu")
+  local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu", "Sub Menu for Vehicles")
   local carsList = NativeUI.CreateListItem("Spawn Cars", cars, 1)
     submenu.OnListSelect = function(sender, item, index)
         if item == carsList then
@@ -375,8 +375,8 @@ weapons = {
 }
 
 function Weapons(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Weapons Menu") 
-  local gunsList = NativeUI.CreateListItem("Get Guns", weapons, 1)
+  local submenu = _menuPool:AddSubMenu(menu, "Weapons Menu", "Sub Menu for Weapons") 
+  local gunsList = NativeUI.CreateListItem("Get Weapons", weapons, 1)
     submenu.OnListSelect = function(sender, item, index)  
         if item == gunsList then
             local selectedGun = item:IndexToItem(index)
@@ -395,34 +395,27 @@ function Weapons(menu)
   submenu:AddItem(click)
 end
 
-function Heal(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Heal") 
-  local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
-  submenu.OnItemSelect = function(sender, item, index)
-        if item == heal then
-          SetEntityHealth(PlayerPedId(), 175)
-          notify("~g~Player Healed.")
-      end
-  end
-  submenu:AddItem(heal)
-end
-
-function Armour(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Armour") 
+function Options(menu)
+  local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
   local armour = NativeUI.CreateItem("Get Armour", "Gives Player Ped Armour")
-  submenu.OnItemSelect = function(sender, item, index)
-        if item == armour then
-          SetPedArmour(GetPlayerPed(-1), 50)
-          notify("~g~Player Got Armour.")
-      end
-  end
+  local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
+  submenu:AddItem(heal)
   submenu:AddItem(armour)
+  submenu.OnItemSelect = function(sender, item, index)
+    if item == armour then 
+      SetPedArmour(GetPlayerPed(-1), 50)
+      notify("~g~Player Got Armour.")
+    else if item == heal then
+      SetEntityHealth(PlayerPedId(), 175)
+      notify("~g~Player Healed.")
+    end
+  end
+end
 end
 
+Options(mainMenu)
 Cars(mainMenu)
 Weapons(mainMenu)
-Heal(mainMenu)
-Armour(mainMenu)
 _menuPool:RefreshIndex()
 
 Citizen.CreateThread(function()
