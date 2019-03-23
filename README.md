@@ -17,15 +17,7 @@ INSTALL INSTRUCTIONS:
 
 # Changelog
 
-- Cleaner UI ver 0.2.5
-- Ped Changing ver 0.2.4
-- Cleaner UI ver 0.2.3
-- Player Options Menu Added ver 0.2.3
-- Set Ped Armour ver 0.2.2
-- Heal Ped ver 0.2.2
-- Seat Swapping ver 0.2
-- Cleaner UI ver 0.2
-
+Visit Releases to view the Changelog!
 
 # How to Update to ver 0.2.5?
 
