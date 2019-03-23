@@ -16,6 +16,7 @@ INSTALL INSTRUCTIONS:
 
 # Changelog
 
+- Cleaner UI ver 0.2.5
 - Ped Changing ver 0.2.4
 - Cleaner UI ver 0.2.3
 - Player Options Menu Added ver 0.2.3
@@ -23,3 +24,12 @@ INSTALL INSTRUCTIONS:
 - Heal Ped ver 0.2.2
 - Seat Swapping ver 0.2
 - Cleaner UI ver 0.2
+
+
+#How to Update to ver 0.2.5?
+
+1: Open SimpleMenu.lua on GitHub
+2: Open SimpleMenu.lua on your end
+3: Copy SimpleMenu.lua Code on GitHub
+4: Paste SimpleMenu.lua Code from GitHub to your SimpleMenu.lua
+5: Save everything and restart the Resource [Dont need to restart the Server only the Resource]
