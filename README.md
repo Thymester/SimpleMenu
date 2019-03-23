@@ -28,6 +28,8 @@ INSTALL INSTRUCTIONS:
 
 # How to Update to ver 0.2.5?
 
+Easiest way is going to Releases and downloading the Rar from there... If you dont want to do that then do the following.
+
 1: Open SimpleMenu.lua on GitHub
 
 2: Open SimpleMenu.lua on your end
