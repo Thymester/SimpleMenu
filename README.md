@@ -12,7 +12,8 @@ INSTALL INSTRUCTIONS:
       * - start SimpleMenu
       
   4: Do not change the name of any of the folders to make it easier. server.cfg is case sensitive
-
+  
+  If you wish you may use this in any private or public project!
 
 # Changelog
 
