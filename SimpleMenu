@@ -1,4 +1,9 @@
---Made by Agony
+--[[
+-----------------------------------
+| Made by Agony                   |
+| http://www.apache.org/licenses/ |
+-----------------------------------
+--]]
 
 _menuPool = NativeUI.CreatePool()
 mainMenu = NativeUI.CreateMenu("SimpleMenu", "Made By: ~b~Agony")
@@ -339,7 +344,7 @@ seats = {-1,0,1,2}
 end
 
 weapons = {
-	"weapon_knife",
+  "weapon_knife",
   "weapon_knightstick",
   "weapon_hammer",
   "weapon_bat",
@@ -395,24 +400,6 @@ function Weapons(menu)
   end
   submenu:AddItem(gunsList)
   submenu:AddItem(click)
-end
-
-function Options(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
-  local armour = NativeUI.CreateItem("Get Armour", "Gives Player Ped Armour")
-  local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
-  submenu:AddItem(heal)
-  submenu:AddItem(armour)
-  submenu.OnItemSelect = function(sender, item, index)
-    if item == armour then 
-      SetPedArmour(GetPlayerPed(-1), 50)
-      notify("~g~Player Got Armour.")
-    else if item == heal then
-      SetEntityHealth(PlayerPedId(), 175)
-      notify("~g~Player Healed")
-      end
-    end
-  end
 end
 
 peds = {
@@ -1118,9 +1105,23 @@ peds = {
 "u_m_y_zombie_01",
 }
 
-function Peds(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Ped Changing", "Sub Menu to change Player Peds")
-  local pedsList = NativeUI.CreateListItem("Change Peds", peds, 1)
+function Options(menu)
+  local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
+  local armour = NativeUI.CreateItem("Get Armour", "Gives Player Ped Armour")
+  local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
+  submenu:AddItem(heal)
+  submenu:AddItem(armour)
+  submenu.OnItemSelect = function(sender, item, index)
+    if item == armour then 
+      SetPedArmour(GetPlayerPed(-1), 50)
+      notify("~g~Player Got Armour.")
+    else if item == heal then
+      SetEntityHealth(PlayerPedId(), 175)
+      notify("~g~Player Healed")
+      end
+    end
+  end
+  local pedsList = NativeUI.CreateListItem("Change Peds", peds, 1, "Changes Player Ped")
   submenu:AddItem(pedsList)
   submenu.OnListSelect = function(sender, item, index)
   if item == pedsList then
@@ -1130,9 +1131,8 @@ function Peds(menu)
     end
   end
 end
-  
+
 Options(mainMenu)
-Peds(mainMenu)
 Cars(mainMenu)
 Weapons(mainMenu)
 _menuPool:RefreshIndex()
@@ -1141,7 +1141,7 @@ Citizen.CreateThread(function()
     while true do
       Citizen.Wait(0)
       _menuPool:ProcessMenus()
-      if IsControlJustPressed(1, 288) then
+      if IsControlJustPressed(1, 167) then
         mainMenu:Visible(not mainMenu:Visible())
         end
     end
