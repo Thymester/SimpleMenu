@@ -26,7 +26,7 @@ INSTALL INSTRUCTIONS:
 - Cleaner UI ver 0.2
 
 
-#How to Update to ver 0.2.5?
+# How to Update to ver 0.2.5?
 
 1: Open SimpleMenu.lua on GitHub
 2: Open SimpleMenu.lua on your end
