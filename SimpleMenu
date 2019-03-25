@@ -320,27 +320,108 @@ cars = {
     "zion2",
     "ztype",
 }
+
+Citizen.CreateThread(function()
+  local key = 57
+  while true do
+      Citizen.Wait(1)
+      if IsControlJustReleased(1,  key) then
+        local waypoint = GetFirstBlipInfoId(8)
+      if DoesBlipExist(waypoint) then
+         SetEntityCoords(PlayerPedId(), GetBlipInfoIdCoord(waypoint))
+      end
+    end
+  end
+end)
+
+function Teleport(menu)
+  local tp = NativeUI.CreateItem("~o~Teleport to Waypoint", "Teleports Ped to Waypoint")
+  menu:AddItem(tp)
+  menu.OnItemSelect = function(sender, item, index)
+    if item == tp then
+      local waypoint = GetFirstBlipInfoId(8)
+    if DoesBlipExist(waypoint) then
+       SetEntityCoords(PlayerPedId(), GetBlipInfoIdCoord(waypoint))
+      end
+    end
+  end
+end
+
 function Cars(menu)
   local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu", "Sub Menu for Vehicles")
   local carsList = NativeUI.CreateListItem("Spawn Cars", cars, 1)
-    submenu.OnListSelect = function(sender, item, index)
-        if item == carsList then
-            local selectedCar = item:IndexToItem(index)
-            spawnCar(selectedCar)
-            notify("Car Spawned: "..selectedCar)
-        end
-    end 
+  submenu:AddItem(carsList)
+  submenu.OnListSelect = function(sender, item, index)
+      if item == carsList then
+        local selectedCar = item:IndexToItem(index)
+        spawnCar(selectedCar)
+        notify("~b~Car Spawned: "..selectedCar)
+      end
+    end
+  local fixcar = NativeUI.CreateItem("Fix Vehicle", "Fixes Vehicle Ped is in.")
+  local cleancar = NativeUI.CreateItem("Clean Vehicle", "Cleans Vehicle Ped is in.")
+  local delv = NativeUI.CreateItem("~r~Delete Vehicle", "Deletes Vehicle [If in Driver Seat]")
+  submenu:AddItem(fixcar)
+  submenu:AddItem(cleancar)
+  submenu:AddItem(delv)
+  submenu.OnItemSelect = function(sender, item, index)
+      if item == fixcar then
+        local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+		    SetVehicleEngineHealth(vehicle, 0)
+		    SetVehicleEngineOn( vehicle, true, true )
+		    SetVehicleFixed(vehicle)
+      else if item == cleancar then
+        local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+		    SetVehicleDirtLevel(vehicle, 0)
+      else if item == delv then
+        local ped = GetPlayerPed( -1 )
+
+    if (DoesEntityExist(ped) and not IsEntityDead(ped)) then 
+        local pos = GetEntityCoords(ped)
+        if (IsPedSittingInAnyVehicle(ped)) then 
+          local vehicle = GetVehiclePedIsIn(ped, false)
+          if (GetPedInVehicleSeat(vehicle, -1) == ped) then 
+            SetEntityAsMissionEntity(vehicle, true, true )
+            deleteCar(vehicle)
+            if (DoesEntityExist(vehicle)) then 
+              notify("~r~Unable to delete vehicle, try again.")
+            else 
+              notify("~g~Vehicle deleted.")
+            end 
+          else 
+            notify("~o~You must be in the driver's seat!")
+            end 
+        else
+          local playerPos = GetEntityCoords(ped, 1)
+          local inFrontOfPlayer = GetOffsetFromEntityInWorldCoords(ped, 0.0, distanceToCheck, 0.0)
+          local vehicle = GetVehicleInDirection(playerPos, inFrontOfPlayer)
+          if ( DoesEntityExist(vehicle)) then 
+            SetEntityAsMissionEntity(vehicle, true, true)
+            deleteCar(vehicle)
+            if (DoesEntityExist(vehicle)) then 
+              notify("~r~Unable to delete vehicle, try again.")
+            else 
+              notify("~g~Vehicle deleted.")
+            end 
+          else 
+            notify("~o~You must be in or near a vehicle to delete it.")
+          end 
+        end 
+      end 
+    end
+      end
+    end
+  end
 seats = {-1,0,1,2}
-    local seat = NativeUI.CreateSliderItem("Change Seats", seats, 1)
-    submenu.OnSliderChange = function(sender, item, index)
+  local seat = NativeUI.CreateSliderItem("Change Seats", seats, 1)
+  submenu:AddItem(seat)
+  submenu.OnSliderChange = function(sender, item, index)
       if item == seat then
         vehSeat = item:IndexToItem(index)
         local pedsCar = GetVehiclePedIsIn(GetPlayerPed(-1),false)
         SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
       end
     end
-    submenu:AddItem(carsList)
-    submenu:AddItem(seat)
 end
 
 weapons = {
@@ -1109,8 +1190,17 @@ function Options(menu)
   local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
   local armour = NativeUI.CreateItem("Get Armour", "Gives Player Ped Armour")
   local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
+  local tp = NativeUI.CreateItem("Teleport To Waypoint", "Teleports Ped to Waypoint")
+  local godmode = NativeUI.CreateItem("God Mode [On]", "Gives Player Ped God Mode")
+  local godmode2 = NativeUI.CreateItem("God Mode [Off]", "Removes Player Ped God Mode")
+  local gone = NativeUI.CreateItem("Invisible [On]", "Gives Player Ped Invisibility")
+  local gone2 = NativeUI.CreateItem("Invisible [Off]", "Removes Player Ped Invisibility")
   submenu:AddItem(heal)
   submenu:AddItem(armour)
+  submenu:AddItem(godmode)
+  submenu:AddItem(godmode2)
+  submenu:AddItem(gone)
+  submenu:AddItem(gone2)
   submenu.OnItemSelect = function(sender, item, index)
     if item == armour then 
       SetPedArmour(GetPlayerPed(-1), 50)
@@ -1118,9 +1208,25 @@ function Options(menu)
     else if item == heal then
       SetEntityHealth(PlayerPedId(), 175)
       notify("~g~Player Healed")
+    else if item == godmode then
+      SetEntityInvincible(GetPlayerPed(-1), true)
+      notify("~g~Player now Invincible")
+    else if item == godmode2 then
+      SetEntityInvincible(GetPlayerPed(-1), false)
+      notify("~r~Player no longer Invincible")
+    else if item == gone then
+      SetEntityVisible(GetPlayerPed(-1), false)
+      notify("~g~Player now Invisible")
+    else if item == gone2 then
+      SetEntityVisible(GetPlayerPed(-1), true)
+      notify("~r~Player no longer Invisible")
+                end
+              end
+            end
+          end
+        end
       end
     end
-  end
   local pedsList = NativeUI.CreateListItem("Change Peds", peds, 1, "Changes Player Ped")
   submenu:AddItem(pedsList)
   submenu.OnListSelect = function(sender, item, index)
@@ -1135,6 +1241,7 @@ end
 Options(mainMenu)
 Cars(mainMenu)
 Weapons(mainMenu)
+Teleport(mainMenu)
 _menuPool:RefreshIndex()
 
 Citizen.CreateThread(function()
@@ -1184,4 +1291,20 @@ function loadModel(modelHash)
   end
   SetPlayerModel(localPed, model)
   SetModelAsNoLongerNeeded(model)
+end
+
+function deleteCar( entity )
+  Citizen.InvokeNative( 0xEA386986E786A54F, Citizen.PointerValueIntInitialized( entity ) )
+end
+
+function GetVehicleInDirection( coordFrom, coordTo )
+  local rayHandle = CastRayPointToPoint( coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z, 10, GetPlayerPed( -1 ), 0 )
+  local _, _, _, _, vehicle = GetRaycastResult( rayHandle )
+  return vehicle
+end
+
+function ShowNotification( text )
+  SetNotificationTextEntry( "STRING" )
+  AddTextComponentString( text )
+  DrawNotification( false, false )
 end
