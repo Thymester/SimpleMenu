@@ -32,3 +32,30 @@ Easiest way is going to Releases and downloading the Rar from there... If you do
 4: Paste SimpleMenu.lua Code from GitHub to your SimpleMenu.lua
 
 5: Save everything and restart the Resource [Dont need to restart the Server only the Resource]
+
+# How to remove God Mode & Invisibility
+
+1: Comment out lines 1187 -> 1190 with -- 
+    * Example
+      --submenu:AddItem(godmode)
+2: Comment out 1193 -> 1196 with --
+    * Example
+      --submenu:AddItem(godmode)
+3: Comment out lines 1204 -> 1219 with --[[ before and --]] after
+    * Example
+    --[[else if item == godmode then
+      SetEntityInvincible(GetPlayerPed(-1), true)
+      notify("~g~Player now Invincible")
+    else if item == godmode2 then
+      SetEntityInvincible(GetPlayerPed(-1), false)
+      notify("~r~Player no longer Invincible")
+    else if item == gone then
+      SetEntityVisible(GetPlayerPed(-1), false)
+      notify("~g~Player now Invisible")
+    else if item == gone2 then
+      SetEntityVisible(GetPlayerPed(-1), true)
+      notify("~r~Player no longer Invisible")--]]
+                --[[end
+              end
+            end
+          end--]]
