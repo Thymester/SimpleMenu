@@ -64,3 +64,19 @@ Easiest way is going to Releases and downloading the Rar from there... If you do
               end
             end
           end--]]
+
+# How to enable Custom Car & Ped Spawning
+
+For Custom Car Spawns
+
+1: Uncomment lines 385 & 387 (To uncomment remove "--")
+
+2: Uncomment lines 393 -> 397 (To uncomment remove "--[[" and "]]")
+
+For Custom Ped Spawns
+
+1: Uncomment lines 1286 & 1288 (To uncomment remove "--")
+
+2: Uncomment lines 1294 -> 1298 (To uncomment remove "--[[" and "]]")
+
+To add the Custom Peds and Custom Cars follow the templates located on lines 310 & 1234
