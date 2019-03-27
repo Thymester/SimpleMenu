@@ -4,23 +4,9 @@
 | http://www.apache.org/licenses/LICENSE-2.0 |
 ----------------------------------------------
 --]]
-
 _menuPool = NativeUI.CreatePool()
 mainMenu = NativeUI.CreateMenu("SimpleMenu", "Made By: ~b~Agony")
 _menuPool:Add(mainMenu)
-
-bool = false
-
-AddEventHandler('onClientResourceStart', function (resourceName)
-  if(GetCurrentResourceName() ~= resourceName) then
-    return
-  end
-  print('The resource ' .. resourceName .. ' has been started on the client.')
-end)
-
-AddEventHandler('onClientResourceStop', function (resourceName)
-  print('The resource ' .. resourceName .. ' has been stopped on the client.')
-end)
 
 cars = {
     "adder",
@@ -321,6 +307,15 @@ cars = {
     "ztype",
 }
 
+--Replace DONT_SPAWN following the template with your addons spawn codes
+--[[
+  TEMPLATE: "",
+  The Template MUST have " before and " after the CARS spawn code and , to move onto the next line
+]]
+acars = {
+  "DONT_SPAWN",
+}
+
 Citizen.CreateThread(function()
   local key = 57
   while true do
@@ -334,8 +329,51 @@ Citizen.CreateThread(function()
   end
 end)
 
+Citizen.CreateThread(function()
+  local key = 56
+  while true do
+    Citizen.Wait(1)
+    if IsControlJustReleased(1, key) then
+      local ped = GetPlayerPed( -1 )
+
+    if (DoesEntityExist(ped) and not IsEntityDead(ped)) then 
+        local pos = GetEntityCoords(ped)
+        if (IsPedSittingInAnyVehicle(ped)) then 
+          local vehicle = GetVehiclePedIsIn(ped, false)
+          if (GetPedInVehicleSeat(vehicle, -1) == ped) then 
+            SetEntityAsMissionEntity(vehicle, true, true )
+            deleteCar(vehicle)
+            if (DoesEntityExist(vehicle)) then 
+              notify("~r~Unable to delete vehicle")
+            else 
+              notify("~g~Vehicle deleted")
+            end 
+          else 
+            notify("~o~You must be in the driver's seat!")
+            end 
+        else
+          local playerPos = GetEntityCoords(ped, 1)
+          local inFrontOfPlayer = GetOffsetFromEntityInWorldCoords(ped, 0.0, distanceToCheck, 0.0)
+          local vehicle = GetVehicleInDirection(playerPos, inFrontOfPlayer)
+          if ( DoesEntityExist(vehicle)) then 
+            SetEntityAsMissionEntity(vehicle, true, true)
+            deleteCar(vehicle)
+            if (DoesEntityExist(vehicle)) then 
+              notify("~r~Unable to delete vehicle")
+            else 
+              notify("~g~Vehicle deleted")
+            end 
+          else 
+            notify("~o~Must be in a vehicle's driver seat to delete it")
+          end 
+        end 
+      end 
+    end
+  end
+end)
+
 function Teleport(menu)
-  local tp = NativeUI.CreateItem("~o~Teleport to Waypoint", "Teleports Ped to Waypoint")
+  local tp = NativeUI.CreateItem("~o~Teleport to Waypoint", "Teleports Ped to Waypoint or use F10")
   menu:AddItem(tp)
   menu.OnItemSelect = function(sender, item, index)
     if item == tp then
@@ -350,17 +388,24 @@ end
 function Cars(menu)
   local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu", "Sub Menu for Vehicles")
   local carsList = NativeUI.CreateListItem("Spawn Cars", cars, 1)
+  --local acarsList = NativeUI.CreateListItem("Spawn Addon Cars", acars, 1, "~r~DONT SPAWN UNTIL EDITED OR ELSE MENU WILL CRASH")
   submenu:AddItem(carsList)
+  --submenu:AddItem(acarsList)
   submenu.OnListSelect = function(sender, item, index)
       if item == carsList then
         local selectedCar = item:IndexToItem(index)
         spawnCar(selectedCar)
         notify("~b~Car Spawned: "..selectedCar)
-      end
+      --[[else if item == acarsList then
+        local selectedaCar = item:IndexToItem(index)
+        spawnCar(selectedaCar)
+        notify("~b~Car Spawned: "..selectedaCar)
+      end]]
     end
+  end
   local fixcar = NativeUI.CreateItem("Fix Vehicle", "Fixes Vehicle Ped is in.")
   local cleancar = NativeUI.CreateItem("Clean Vehicle", "Cleans Vehicle Ped is in.")
-  local delv = NativeUI.CreateItem("~r~Delete Vehicle", "Deletes Vehicle [If in Driver Seat]")
+  local delv = NativeUI.CreateItem("~r~Delete Vehicle", "Deletes Vehicle or use F9")
   submenu:AddItem(fixcar)
   submenu:AddItem(cleancar)
   submenu:AddItem(delv)
@@ -384,9 +429,9 @@ function Cars(menu)
             SetEntityAsMissionEntity(vehicle, true, true )
             deleteCar(vehicle)
             if (DoesEntityExist(vehicle)) then 
-              notify("~r~Unable to delete vehicle, try again.")
+              notify("~r~Unable to delete vehicle... Try Again")
             else 
-              notify("~g~Vehicle deleted.")
+              notify("~g~Vehicle deleted")
             end 
           else 
             notify("~o~You must be in the driver's seat!")
@@ -399,12 +444,12 @@ function Cars(menu)
             SetEntityAsMissionEntity(vehicle, true, true)
             deleteCar(vehicle)
             if (DoesEntityExist(vehicle)) then 
-              notify("~r~Unable to delete vehicle, try again.")
+              notify("~r~Unable to delete vehicle... Try Again")
             else 
-              notify("~g~Vehicle deleted.")
+              notify("~g~Vehicle deleted")
             end 
           else 
-            notify("~o~You must be in or near a vehicle to delete it.")
+            notify("~o~Must be in the driver's seat!")
           end 
         end 
       end 
@@ -421,7 +466,7 @@ seats = {-1,0,1,2}
         local pedsCar = GetVehiclePedIsIn(GetPlayerPed(-1),false)
         SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
       end
-    end
+  end
 end
 
 weapons = {
@@ -1186,6 +1231,15 @@ peds = {
 "u_m_y_zombie_01",
 }
 
+--Replace following the template u_m_y_tattoo_01 with your addon peds
+--[[
+  TEMPLATE: "",
+  The Template MUST have " before and " after the PEDS spawn code and , to move onto the next line
+]]
+apeds = {
+  "DONT_SPAWN",
+}
+
 function Options(menu)
   local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
   local armour = NativeUI.CreateItem("Get Armour", "Gives Player Ped Armour")
@@ -1195,8 +1249,10 @@ function Options(menu)
   local godmode2 = NativeUI.CreateItem("God Mode [Off]", "Removes Player Ped God Mode")
   local gone = NativeUI.CreateItem("Invisible [On]", "Gives Player Ped Invisibility")
   local gone2 = NativeUI.CreateItem("Invisible [Off]", "Removes Player Ped Invisibility")
+  local nwanted = NativeUI.CreateItem("Never Wanted", "Player Never Wanted")
   submenu:AddItem(heal)
   submenu:AddItem(armour)
+  submenu:AddItem(nwanted)
   submenu:AddItem(godmode)
   submenu:AddItem(godmode2)
   submenu:AddItem(gone)
@@ -1208,7 +1264,7 @@ function Options(menu)
     else if item == heal then
       SetEntityHealth(PlayerPedId(), 175)
       notify("~g~Player Healed")
-    else if item == godmode then
+    else if item == godmode then 
       SetEntityInvincible(GetPlayerPed(-1), true)
       notify("~g~Player now Invincible")
     else if item == godmode2 then
@@ -1220,6 +1276,11 @@ function Options(menu)
     else if item == gone2 then
       SetEntityVisible(GetPlayerPed(-1), true)
       notify("~r~Player no longer Invisible")
+    else if item == nwanted then
+      if GetPlayerWantedLevel(PlayerId()) ~= 0 then
+        SetMaxWantedLevel(GetPlayerPed(-1), 0)
+                    end
+                  end
                 end
               end
             end
@@ -1228,12 +1289,19 @@ function Options(menu)
       end
     end
   local pedsList = NativeUI.CreateListItem("Change Peds", peds, 1, "Changes Player Ped")
+  --local apedsList = NativeUI.CreateListItem("Change Addon Peds", apeds, 1, "~r~DONT SPAWN UNTIL EDITED OR ELSE MENU WILL CRASH")
   submenu:AddItem(pedsList)
+  --submenu:AddItem(apedsList)
   submenu.OnListSelect = function(sender, item, index)
   if item == pedsList then
     local selectedPed = item:IndexToItem(index)
     loadModel(selectedPed)
     notify("~g~Ped Changed: "..selectedPed)
+  --[[else if item == apedsList then
+    local selectedaPed = item:IndexToItem(index)
+    loadModel(selectedaPed)
+    notify("~g~Ped Changed: "..selectedaPed)
+      end]]
     end
   end
 end
@@ -1246,7 +1314,7 @@ _menuPool:RefreshIndex()
 
 Citizen.CreateThread(function()
     while true do
-      Citizen.Wait(0)
+      Citizen.Wait(1)
       _menuPool:ProcessMenus()
       if IsControlJustPressed(1, 167) then
         mainMenu:Visible(not mainMenu:Visible())
