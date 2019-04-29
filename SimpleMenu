@@ -8,6 +8,16 @@ _menuPool = NativeUI.CreatePool()
 mainMenu = NativeUI.CreateMenu("SimpleMenu", "Made By: ~b~Agony")
 _menuPool:Add(mainMenu)
 
+local allowedToUse = false
+Citizen.CreateThread(function()
+  TriggerServerEvent("admin:getIsAllowed")
+end)
+
+RegisterNetEvent("admin:returnIsAllowed")
+AddEventHandler("admin:returnIsAllowed", function(isAllowed)
+    allowedToUse = isAllowed
+end)
+
 cars = {
     "adder",
     "airbus",
@@ -1259,23 +1269,47 @@ function Options(menu)
   submenu:AddItem(gone2)
   submenu.OnItemSelect = function(sender, item, index)
     if item == armour then 
+      if allowedToUse then
       SetPedArmour(GetPlayerPed(-1), 50)
       notify("~g~Player Got Armour.")
+    else
+      notify("~r~You dont have permission")
+    end
     else if item == heal then
+      if allowedToUse then
       SetEntityHealth(PlayerPedId(), 175)
       notify("~g~Player Healed")
+    else
+      notify("~r~You dont have permission")
+    end
     else if item == godmode then 
-      SetEntityInvincible(GetPlayerPed(-1), true)
-      notify("~g~Player now Invincible")
+      if allowedToUse then
+        SetEntityInvincible(GetPlayerPed(-1), true)
+        notify("~g~Player now Invincible")
+      else
+        notify("~r~You don't have permission")
+      end
     else if item == godmode2 then
-      SetEntityInvincible(GetPlayerPed(-1), false)
-      notify("~r~Player no longer Invincible")
+      if allowedToUse then
+        SetEntityInvincible(GetPlayerPed(-1), false)
+        notify("~g~Player now Invincible")
+      else
+        notify("~r~You don't have permission.")
+      end
     else if item == gone then
+    if allowedToUse then
       SetEntityVisible(GetPlayerPed(-1), false)
       notify("~g~Player now Invisible")
+    else
+      notify("~r~You dont have permission")
+    end
     else if item == gone2 then
-      SetEntityVisible(GetPlayerPed(-1), true)
-      notify("~r~Player no longer Invisible")
+      if allowedToUse then
+        SetEntityVisible(GetPlayerPed(-1), true)
+        notify("~g~Player now Invisible")
+      else
+        notify("~r~You dont have permission")
+      end
     else if item == nwanted then
       if GetPlayerWantedLevel(PlayerId()) ~= 0 then
         SetMaxWantedLevel(GetPlayerPed(-1), 0)
