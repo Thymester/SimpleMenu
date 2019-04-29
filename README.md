@@ -19,6 +19,15 @@ INSTALL INSTRUCTIONS:
 
 Visit Releases to view the Changelog!
 
+# How to add Ace Permissions
+
+***To add Permissions to any given person do the following.***
+
+```
+# SimpleMenu Group
+add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here
+```
+
 # How to remove God Mode & Invisibility
 
 1: Comment out lines 1187 -> 1190 with -- 
