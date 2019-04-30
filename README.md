@@ -31,8 +31,11 @@ add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Perso
 Ace Permissions are added to the following.
 
 1: Healing
+
 2: Armour Giving
+
 3: Godmode
+
 4: Invisibility
 
 # How to remove God Mode & Invisibility
