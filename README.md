@@ -60,3 +60,7 @@ Ace Permissions are added to the following.
 2: Uncomment lines 1294 -> 1298 (To uncomment remove "--[[" and "]]")
 
 To add the Custom Peds and Custom Cars follow the templates located on lines 310 & 1234
+
+# NOTE:
+
+NativeUI is from Frazzle not myself, if you wish to download this file it is **NOT** in a drag & drop format, download from https://forum.fivem.net/t/simplemenu-now-with-ace-permissions-uses-requires-nativeui-lua/324733
