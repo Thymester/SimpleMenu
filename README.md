@@ -37,7 +37,7 @@ Ace Permissions are added to the following.
 
 # How to remove God Mode & Invisibility
 
-**REMOVED DUE TO Ace Permissions NOW BEING SUPPORTED!
+**REMOVED DUE TO Ace Permissions NOW BEING SUPPORTED!**
 
 # How to enable Custom Car & Ped Spawning
 
