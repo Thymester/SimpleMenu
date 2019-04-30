@@ -37,35 +37,7 @@ Ace Permissions are added to the following.
 
 # How to remove God Mode & Invisibility
 
-1: Comment out lines 1187 -> 1190 with -- 
-
-    * Example
-      --submenu:AddItem(godmode)
-      
-2: Comment out 1193 -> 1196 with --
-
-    * Example
-      --submenu:AddItem(godmode)
-      
-3: Comment out lines 1204 -> 1219 with --[[ before and --]] after
-
-    * Example
-    --[[else if item == godmode then
-      SetEntityInvincible(GetPlayerPed(-1), true)
-      notify("~g~Player now Invincible")
-    else if item == godmode2 then
-      SetEntityInvincible(GetPlayerPed(-1), false)
-      notify("~r~Player no longer Invincible")
-    else if item == gone then
-      SetEntityVisible(GetPlayerPed(-1), false)
-      notify("~g~Player now Invisible")
-    else if item == gone2 then
-      SetEntityVisible(GetPlayerPed(-1), true)
-      notify("~r~Player no longer Invisible")--]]
-                --[[end
-              end
-            end
-          end--]]
+**REMOVED DUE TO Ace Permissions NOW BEING SUPPORTED!
 
 # How to enable Custom Car & Ped Spawning
 
