@@ -40,7 +40,7 @@ add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of P
 
 3: Must reload script after changes
 
-Ace Permissions are added to the following.
+## Ace Permissions are added to the following.
 
 1: Healing
 
