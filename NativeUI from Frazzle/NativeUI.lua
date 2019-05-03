@@ -3289,6 +3289,213 @@ function UIMenu:Draw()
     end
 end
 
+function UIMenu:ProcessMouse()
+    if not self._Visible or self.JustOpened or #self.Items == 0 or tobool(Controller()) or not self.Settings.MouseControlsEnabled then
+        EnableControlAction(0, 2, true)
+        EnableControlAction(0, 1, true)
+        EnableControlAction(0, 25, true)
+        EnableControlAction(0, 24, true)
+        if self.Dirty then
+            for _, Item in pairs(self.Items) do
+                if Item:Hovered() then
+                    Item:Hovered(false)
+                end
+            end
+        end
+        return
+    end
+
+    local SafeZone = {X = 0, Y = 0}
+    local WindowHeight = self:CalculateWindowHeight()
+    if self.Settings.ScaleWithSafezone then
+       SafeZone = GetSafeZoneBounds()
+    end
+
+    local Limit = #self.Items
+    local ItemOffset = 0
+
+    ShowCursorThisFrame()
+
+    if #self.Items > self.Pagination.Total + 1 then
+        Limit = self.Pagination.Max
+    end
+
+    if IsMouseInBounds(0, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
+        SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading() + 5)
+        SetCursorSprite(6)
+    elseif IsMouseInBounds(1920 - 30, 0, 30, 1080) and self.Settings.MouseEdgeEnabled then
+        SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading() - 5)
+        SetCursorSprite(7)  
+    elseif self.Settings.MouseEdgeEnabled then
+        SetCursorSprite(1)
+    end
+
+    for i = self.Pagination.Min + 1, Limit, 1 do
+        local X, Y = self.Position.X + SafeZone.X, self.Position.Y + 144 - 37 + self.Subtitle.ExtraY + ItemOffset + SafeZone.Y + WindowHeight
+        local Item = self.Items[i]
+        local Type, SubType = Item()
+        local Width, Height = 431 + self.WidthOffset, self:CalculateItemHeightOffset(Item)
+
+        if IsMouseInBounds(X, Y, Width, Height) then
+            Item:Hovered(true)
+            if not self.Controls.MousePressed then
+                if IsDisabledControlJustPressed(0, 24) then
+                    Citizen.CreateThread(function()
+                        local _X, _Y, _Width, _Height = X, Y, Width, Height
+                        self.Controls.MousePressed = true
+                        if Item:Selected() and Item:Enabled() then
+                            if SubType == "UIMenuListItem" then
+                                if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+                                    self:GoLeft()
+                                elseif not IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+                                    self:SelectItem()
+                                end
+                                if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+                                    self:GoRight()
+                                elseif not IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+                                    self:SelectItem()
+                                end
+                            elseif SubType == "UIMenuSliderItem" then
+                                if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+                                    self:GoLeft()
+                                elseif not IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+                                    self:SelectItem()
+                                end
+                                if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+                                    self:GoRight()
+                                elseif not IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+                                    self:SelectItem()
+                                end
+                            elseif SubType == "UIMenuProgressItem" then
+                                if IsMouseInBounds(Item.Bar.X + SafeZone.X, Item.Bar.Y + SafeZone.Y - 12, Item.Data.Max, Item.Bar.Height + 24) then
+                                    Item:CalculateProgress(math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X)
+                                    self.OnProgressChange(self, Item, Item.Data.Index)
+                                    Item.OnProgressChanged(self, Item, Item.Data.Index)
+                                else
+                                    self:SelectItem()
+                                end
+                            else
+                                self:SelectItem()
+                            end
+                        elseif not Item:Selected() then
+                            self:CurrentSelection(i-1)
+                            PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
+                            self.OnIndexChange(self, self:CurrentSelection())
+                            self.ReDraw = true
+                            self:UpdateScaleform()
+                        elseif not Item:Enabled() and Item:Selected() then
+                            PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
+                        end
+                        Citizen.Wait(175)
+                        while IsDisabledControlPressed(0, 24) and IsMouseInBounds(_X, _Y, _Width, _Height) do
+                            if Item:Selected() and Item:Enabled() then
+                                if SubType == "UIMenuListItem" then
+                                    if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+                                        self:GoLeft()
+                                    end
+                                    if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+                                        self:GoRight()
+                                    end
+                                elseif SubType == "UIMenuSliderItem" then
+                                    if IsMouseInBounds(Item.LeftArrow.X + SafeZone.X, Item.LeftArrow.Y + SafeZone.Y, Item.LeftArrow.Width, Item.LeftArrow.Height) then
+                                        self:GoLeft()
+                                    end
+                                    if IsMouseInBounds(Item.RightArrow.X + SafeZone.X, Item.RightArrow.Y + SafeZone.Y, Item.RightArrow.Width, Item.RightArrow.Height) then
+                                        self:GoRight()
+                                    end
+                                elseif SubType == "UIMenuProgressItem" then
+                                    if IsMouseInBounds(Item.Bar.X + SafeZone.X, Item.Bar.Y + SafeZone.Y - 12, Item.Data.Max, Item.Bar.Height + 24) then
+                                        Item:CalculateProgress(math.round(GetControlNormal(0, 239) * 1920) - SafeZone.X)
+                                        self.OnProgressChange(self, Item, Item.Data.Index)
+                                        Item.OnProgressChanged(self, Item, Item.Data.Index)
+                                    else
+                                        self:SelectItem()
+                                    end
+                                end
+                            elseif not Item:Selected() then
+                                self:CurrentSelection(i-1)
+                                PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
+                                self.OnIndexChange(self, self:CurrentSelection())
+                                self.ReDraw = true
+                                self:UpdateScaleform()
+                            elseif not Item:Enabled() and Item:Selected() then
+                                PlaySoundFrontend(-1, self.Settings.Audio.Error, self.Settings.Audio.Library, true)
+                            end
+                            Citizen.Wait(125)                       
+                        end
+                        self.Controls.MousePressed = false
+                    end)
+                end
+            end
+        else
+            Item:Hovered(false)
+        end
+        ItemOffset = ItemOffset + self:CalculateItemHeightOffset(Item)
+    end
+
+    local ExtraX, ExtraY = self.Position.X + SafeZone.X, 144 + self:CalculateItemHeight() + self.Position.Y + SafeZone.Y + WindowHeight
+
+    if #self.Items <= self.Pagination.Total + 1 then return end
+
+    if IsMouseInBounds(ExtraX, ExtraY, 431 + self.WidthOffset, 18) then
+        self.Extra.Up:Colour(30, 30, 30, 255)
+        if not self.Controls.MousePressed then
+            if IsDisabledControlJustPressed(0, 24) then
+                Citizen.CreateThread(function()
+                    local _ExtraX, _ExtraY = ExtraX, ExtraY
+                    self.Controls.MousePressed = true
+                    if #self.Items > self.Pagination.Total + 1 then
+                        self:GoUpOverflow()
+                    else
+                        self:GoUp()
+                    end
+                    Citizen.Wait(175)
+                    while IsDisabledControlPressed(0, 24) and IsMouseInBounds(_ExtraX, _ExtraY, 431 + self.WidthOffset, 18) do
+                        if #self.Items > self.Pagination.Total + 1 then
+                            self:GoUpOverflow()
+                        else
+                            self:GoUp()
+                        end
+                        Citizen.Wait(125)
+                    end
+                    self.Controls.MousePressed = false              
+                end)
+            end
+        end
+    else
+        self.Extra.Up:Colour(0, 0, 0, 200)
+    end
+
+    if IsMouseInBounds(ExtraX, ExtraY + 18, 431 + self.WidthOffset, 18) then
+        self.Extra.Down:Colour(30, 30, 30, 255)
+        if not self.Controls.MousePressed then
+            if IsDisabledControlJustPressed(0, 24) then
+                Citizen.CreateThread(function()
+                    local _ExtraX, _ExtraY = ExtraX, ExtraY
+                    self.Controls.MousePressed = true
+                    if #self.Items > self.Pagination.Total + 1 then
+                        self:GoDownOverflow()
+                    else
+                        self:GoDown()
+                    end
+                    Citizen.Wait(175)
+                    while IsDisabledControlPressed(0, 24) and IsMouseInBounds(_ExtraX, _ExtraY + 18, 431 + self.WidthOffset, 18) do
+                        if #self.Items > self.Pagination.Total + 1 then
+                            self:GoDownOverflow()
+                        else
+                            self:GoDown()
+                        end
+                        Citizen.Wait(125)
+                    end
+                    self.Controls.MousePressed = false              
+                end)
+            end
+        end
+    else
+        self.Extra.Down:Colour(0, 0, 0, 200)
+    end
+end
+
 function UIMenu:AddInstructionButton(button)
     if type(button) == "table" and #button == 2 then
         table.insert(self.InstructionalButtons, button)
@@ -3511,6 +3718,7 @@ end
 
 function MenuPool:ProcessMenus()
     self:ProcessControl()
+    self:ProcessMouse()
     self:Draw()
 end
 
@@ -3518,6 +3726,14 @@ function MenuPool:ProcessControl()
     for _, Menu in pairs(self.Menus) do
         if Menu:Visible() then
             Menu:ProcessControl()
+        end
+    end
+end
+
+function MenuPool:ProcessMouse()
+    for _, Menu in pairs(self.Menus) do
+        if Menu:Visible() then
+            Menu:ProcessMouse()
         end
     end
 end
