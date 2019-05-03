@@ -6,8 +6,7 @@ client_scripts {
 }
 
 server_scripts {
-    "s_menu.lua"
+    "perms/perms.lua",
 }
 
 client_scripts "SimpleMenu.lua"
-server_scripts "s_menu.lua"
