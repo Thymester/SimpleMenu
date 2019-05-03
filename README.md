@@ -26,7 +26,17 @@ Visit Releases to view the Changelog!
 ```
 # SimpleMenu Group
 add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here
+add_ace identifier.steam:[Steam HEX Here] simplemenu.state allow --Name of Person Here
+add_ace identifier.steam:[Steam HEX Here] simplemenu.emt allow --Name of Person Here
+add_ace identifier.steam:[Steam HEX Here] simplemenu.fire allow --Name of Person Here
+add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of Person Here
 ```
+
+# How to add Emergency Services Cars
+
+1: Go to lines 356 --> 366
+2: When you go there add the Emergency Services spawn codes (On your server) to be able to spawn them in-game
+3: Must reload script after changes
 
 Ace Permissions are added to the following.
 
