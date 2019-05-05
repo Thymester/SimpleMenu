@@ -22,6 +22,26 @@ AddEventHandler("admin:returnIsAllowed", function(isAllowed)
     allowedToUse = isAllowed
 end)
 
+local police = false
+Citizen.CreateThread(function()
+  TriggerServerEvent("police:getIsPolice")
+end)
+
+RegisterNetEvent("police:returnIsPolice")
+AddEventHandler("police:returnIsPolice", function(isAllowed)
+    police = isAllowed
+end)
+
+local sheriff = false
+Citizen.CreateThread(function()
+  TriggerServerEvent("sheriff:getIsSheriff")
+end)
+
+RegisterNetEvent("sheriff:returnIsSheriff")
+AddEventHandler("sheriff:returnIsSheriff", function(isAllowed)
+    sheriff = isAllowed
+end)
+
 local state = false
 Citizen.CreateThread(function()
   TriggerServerEvent("state:getIsState")
@@ -29,7 +49,7 @@ end)
 
 RegisterNetEvent("state:returnIsState")
 AddEventHandler("state:returnIsState", function(isAllowed)
-    state = isAllowed
+  state = isAllowed
 end)
 
 local emt = false
@@ -53,430 +73,494 @@ AddEventHandler("fire:returnIsFire", function(isAllowed)
 end)
 
 cars = {
-    "adder",
-    "airbus",
-    "airtug",
-    "akuma",
-    "ambulance",
-    "annihilator",
-    "armytanker",
-    "armytrailer",
-    "armytrailer2",
-    "asea",
-    "asea2",
-    "asterope",
-    "bagger",
-    "baletrailer",
-    "baller",
-    "baller2",
-    "banshee",
-    "barracks",
-    "barracks2",
-    "bati",
-    "bati2",
-    "benson",
-    "bfinjection",
-    "biff",
-    "bison",
-    "bison2",
-    "bison3",
-    "bjxl",
-    "blazer",
-    "blazer2",
-    "blazer3",
-    "blimp",
-    "blista",
-    "bmx",
-    "boattrailer",
-    "bobcatxl",
-    "bodhi2",
-    "boxville",
-    "boxville2",
-    "boxville3",
-    "buccaneer",
-    "buffalo",
-    "buffalo2",
-    "bulldozer",
-    "bullet",
-    "burrito",
-    "burrito2",
-    "burrito3",
-    "burrito4",
-    "burrito5",
-    "bus",
-    "buzzard",
-    "buzzard2",
-    "cablecar",
-    "caddy",
-    "caddy2",
-    "camper",
-    "carbonizzare",
-    "carbonrs",
-    "cargobob",
-    "cargobob2",
-    "cargobob3",
-    "cargoplane",
-    "cavalcade",
-    "cavalcade2",
-    "cheetah",
-    "coach",
-    "cogcabrio",
-    "comet2",
-    "coquette",
-    "cruiser",
-    "crusader",
-    "cuban800",
-    "cutter",
-    "daemon",
-    "dilettante",
-    "dilettante2",
-    "dinghy",
-    "dinghy2",
-    "dloader",
-    "docktrailer",
-    "docktug",
-    "dominator",
-    "double",
-    "dubsta",
-    "dubsta2",
-    "dump",
-    "dune",
-    "dune2",
-    "duster",
-    "elegy2",
-    "emperor",
-    "emperor2",
-    "emperor3",
-    "entityxf",
-    "exemplar",
-    "f620",
-    "faggio2",
-    "fbi",
-    "fbi2",
-    "felon",
-    "felon2",
-    "feltzer2",
-    "firetruk",
-    "fixter",
-    "flatbed",
-    "forklift",
-    "fq2",
-    "freight",
-    "freightcar",
-    "freightcont1",
-    "freightcont2",
-    "freightgrain",
-    "freighttrailer",
-    "frogger",
-    "frogger2",
-    "fugitive",
-    "fusilade",
-    "futo",
-    "gauntlet",
-    "gburrito",
-    "graintrailer",
-    "granger",
-    "gresley",
-    "habanero",
-    "handler",
-    "hauler",
-    "hexer",
-    "hotknife",
-    "infernus",
-    "ingot",
-    "intruder",
-    "issi2",
-    "jackal",
-    "jb700",
-    "jet",
-    "jetmax",
-    "journey",
-    "khamelion",
-    "landstalker",
-    "lazer",
-    "lguard",
-    "luxor",
-    "mammatus",
-    "manana",
-    "marquis",
-    "maverick",
-    "mesa",
-    "mesa2",
-    "mesa3",
-    "metrotrain",
-    "minivan",
-    "mixer",
-    "mixer2",
-    "monroe",
-    "mower",
-    "mule",
-    "mule2",
-    "nemesis",
-    "ninef",
-    "ninef2",
-    "oracle",
-    "oracle2",
-    "packer",
-    "packer",
-    "patriot",
-    "pbus",
-    "pcj",
-    "penumbra",
-    "peyote",
-    "phantom",
-    "phoenix",
-    "picador",
-    "police",
-    "police2",
-    "police3",
-    "police4",
-    "policeb",
-    "policet",
-    "polmav",
-    "pony",
-    "pony2",
-    "pounder",
-    "prairie",
-    "pranger",
-    "predator",
-    "premier",
-    "primo",
-    "proptrailer",
-    "radi",
-    "raketrailer",
-    "rancherxl",
-    "rancherxl2",
-    "rapidgt",
-    "rapidgt2",
-    "ratloader",
-    "rebel",
-    "rebel2",
-    "regina",
-    "rentalbus",
-    "rhino",
-    "riot",
-    "ripley",
-    "rocoto",
-    "romero",
-    "rubble",
-    "ruffian",
-    "ruiner",
-    "rampo",
-    "rampo2",
-    "sabregt",
-    "sadler",
-    "sadler2",
-    "sanchez",
-    "sanchez2",
-    "sandking",
-    "sandking2",
-    "schafter2",
-    "schwarzer",
-    "scorcher",
-    "scrap",
-    "seashark",
-    "seashark2",
-    "seminole",
-    "sentinel",
-    "sentinel2",
-    "serrano",
-    "shamal",
-    "sheriff",
-    "sheriff2",
-    "skylift",
-    "speedo",
-    "speedo2",
-    "squalo",
-    "stainer",
-    "stinger",
-    "stingergt",
-    "stockade",
-    "stockade3",
-    "stratum",
-    "stretch",
-    "stunt",
-    "submersible",
-    "sultan",
-    "suntrap",
-    "superd",
-    "surano",
-    "surfer",
-    "surfer2",
-    "surge",
-    "taco",
-    "tailgater",
-    "tanker",
-    "tankercar",
-    "taxi",
-    "tiptruck",
-    "titan",
-    "tornado",
-    "tornado2",
-    "tornado3",
-    "tornado4",
-    "tourbus",
-    "towtruck",
-    "towtruck2",
-    "tr2",
-    "tr3",
-    "tr4",
-    "tractor",
-    "tractor2",
-    "tractor3",
-    "trailerlogs",
-    "trailers",
-    "trailers2",
-    "trailers3",
-    "trailersmall",
-    "trash",
-    "trflat",
-    "trbike",
-    "trbike2",
-    "trbike3",
-    "tropic",
-    "tvtrailer",
-    "utillitruck",
-    "utillitruck2",
-    "utillitruck3",
-    "vacca",
-    "vader",
-    "velum",
-    "vlgero",
-    "voltic",
-    "voodoo2",
-    "washington",
-    "youga",
-    "zion",
-    "zion2",
-    "ztype",
+  "adder",
+  "airbus",
+  "airtug",
+  "akuma",
+  "ambulance",
+  "annihilator",
+  "armytanker",
+  "armytrailer",
+  "armytrailer2",
+  "asea",
+  "asea2",
+  "asterope",
+  "bagger",
+  "baletrailer",
+  "baller",
+  "baller2",
+  "banshee",
+  "barracks",
+  "barracks2",
+  "bati",
+  "bati2",
+  "benson",
+  "bfinjection",
+  "biff",
+  "bison",
+  "bison2",
+  "bison3",
+  "bjxl",
+  "blazer",
+  "blazer2",
+  "blazer3",
+  "blimp",
+  "blista",
+  "bmx",
+  "boattrailer",
+  "bobcatxl",
+  "bodhi2",
+  "boxville",
+  "boxville2",
+  "boxville3",
+  "buccaneer",
+  "buffalo",
+  "buffalo2",
+  "bulldozer",
+  "bullet",
+  "burrito",
+  "burrito2",
+  "burrito3",
+  "burrito4",
+  "burrito5",
+  "bus",
+  "buzzard",
+  "buzzard2",
+  "cablecar",
+  "caddy",
+  "caddy2",
+  "camper",
+  "carbonizzare",
+  "carbonrs",
+  "cargobob",
+  "cargobob2",
+  "cargobob3",
+  "cargoplane",
+  "cavalcade",
+  "cavalcade2",
+  "cheetah",
+  "coach",
+  "cogcabrio",
+  "comet2",
+  "coquette",
+  "cruiser",
+  "crusader",
+  "cuban800",
+  "cutter",
+  "daemon",
+  "dilettante",
+  "dilettante2",
+  "dinghy",
+  "dinghy2",
+  "dloader",
+  "docktrailer",
+  "docktug",
+  "dominator",
+  "double",
+  "dubsta",
+  "dubsta2",
+  "dump",
+  "dune",
+  "dune2",
+  "duster",
+  "elegy2",
+  "emperor",
+  "emperor2",
+  "emperor3",
+  "entityxf",
+  "exemplar",
+  "f620",
+  "faggio2",
+  "fbi",
+  "fbi2",
+  "felon",
+  "felon2",
+  "feltzer2",
+  "firetruk",
+  "fixter",
+  "flatbed",
+  "forklift",
+  "fq2",
+  "freight",
+  "freightcar",
+  "freightcont1",
+  "freightcont2",
+  "freightgrain",
+  "freighttrailer",
+  "frogger",
+  "frogger2",
+  "fugitive",
+  "fusilade",
+  "futo",
+  "gauntlet",
+  "gburrito",
+  "graintrailer",
+  "granger",
+  "gresley",
+  "habanero",
+  "handler",
+  "hauler",
+  "hexer",
+  "hotknife",
+  "infernus",
+  "ingot",
+  "intruder",
+  "issi2",
+  "jackal",
+  "jb700",
+  "jet",
+  "jetmax",
+  "journey",
+  "khamelion",
+  "landstalker",
+  "lazer",
+  "lguard",
+  "luxor",
+  "mammatus",
+  "manana",
+  "marquis",
+  "maverick",
+  "mesa",
+  "mesa2",
+  "mesa3",
+  "metrotrain",
+  "minivan",
+  "mixer",
+  "mixer2",
+  "monroe",
+  "mower",
+  "mule",
+  "mule2",
+  "nemesis",
+  "ninef",
+  "ninef2",
+  "oracle",
+  "oracle2",
+  "packer",
+  "packer",
+  "patriot",
+  "pbus",
+  "pcj",
+  "penumbra",
+  "peyote",
+  "phantom",
+  "phoenix",
+  "picador",
+  "police",
+  "police2",
+  "police3",
+  "police4",
+  "policeb",
+  "policet",
+  "polmav",
+  "pony",
+  "pony2",
+  "pounder",
+  "prairie",
+  "pranger",
+  "predator",
+  "premier",
+  "primo",
+  "proptrailer",
+  "radi",
+  "raketrailer",
+  "rancherxl",
+  "rancherxl2",
+  "rapidgt",
+  "rapidgt2",
+  "ratloader",
+  "rebel",
+  "rebel2",
+  "regina",
+  "rentalbus",
+  "rhino",
+  "riot",
+  "ripley",
+  "rocoto",
+  "romero",
+  "rubble",
+  "ruffian",
+  "ruiner",
+  "rampo",
+  "rampo2",
+  "sabregt",
+  "sadler",
+  "sadler2",
+  "sanchez",
+  "sanchez2",
+  "sandking",
+  "sandking2",
+  "schafter2",
+  "schwarzer",
+  "scorcher",
+  "scrap",
+  "seashark",
+  "seashark2",
+  "seminole",
+  "sentinel",
+  "sentinel2",
+  "serrano",
+  "shamal",
+  "sheriff",
+  "sheriff2",
+  "skylift",
+  "speedo",
+  "speedo2",
+  "squalo",
+  "stainer",
+  "stinger",
+  "stingergt",
+  "stockade",
+  "stockade3",
+  "stratum",
+  "stretch",
+  "stunt",
+  "submersible",
+  "sultan",
+  "suntrap",
+  "superd",
+  "surano",
+  "surfer",
+  "surfer2",
+  "surge",
+  "taco",
+  "tailgater",
+  "tanker",
+  "tankercar",
+  "taxi",
+  "tiptruck",
+  "titan",
+  "tornado",
+  "tornado2",
+  "tornado3",
+  "tornado4",
+  "tourbus",
+  "towtruck",
+  "towtruck2",
+  "tr2",
+  "tr3",
+  "tr4",
+  "tractor",
+  "tractor2",
+  "tractor3",
+  "trailerlogs",
+  "trailers",
+  "trailers2",
+  "trailers3",
+  "trailersmall",
+  "trash",
+  "trflat",
+  "trbike",
+  "trbike2",
+  "trbike3",
+  "tropic",
+  "tvtrailer",
+  "utillitruck",
+  "utillitruck2",
+  "utillitruck3",
+  "vacca",
+  "vader",
+  "velum",
+  "vlgero",
+  "voltic",
+  "voodoo2",
+  "washington",
+  "youga",
+  "zion",
+  "zion2",
+  "ztype",
 }
 
 --[[Change these accordingly. Only use your server's Emergency Spawn Codes. (These are default GTA so no issues will arise if you keep them but is highly suggested to use
 your own so you can have custom Emergency Services cars)]]
+police = {
+"police"
+}
+
+sheriff = {
+"sheriff"
+}
+
 state = {
-  "sheriff"
+"fbi"
 }
 
 emt = {
-  "ambulance"
+"ambulance"
 }
 
 fire = {
-  "firetruk"
+"firetruk"
 }
 
 --Replace DONT_SPAWN following the template with your addons spawn codes
 --[[  TEMPLATE: "",
-  The Template MUST have " before and " after the CARS spawn code and , to move onto the next line
+The Template MUST have " before and " after the CARS spawn code and , to move onto the next line
 ]]
 acars = {
-  "DONT_SPAWN",
+"DONT_SPAWN",
 }
 
 Citizen.CreateThread(function()
-  local key = 57
-  while true do
-      Citizen.Wait(1)
-      if IsControlJustReleased(1,  key) then
-        local waypoint = GetFirstBlipInfoId(8)
-      if DoesBlipExist(waypoint) then
-         SetEntityCoords(PlayerPedId(), GetBlipInfoIdCoord(waypoint))
-      end
-    end
-  end
-end)
-
-Citizen.CreateThread(function()
-  local key = 56
-  while true do
+local key = 57
+while true do
     Citizen.Wait(1)
-    if IsControlJustReleased(1, key) then
-      local ped = GetPlayerPed( -1 )
-
-    if (DoesEntityExist(ped) and not IsEntityDead(ped)) then 
-        local pos = GetEntityCoords(ped)
-        if (IsPedSittingInAnyVehicle(ped)) then 
-          local vehicle = GetVehiclePedIsIn(ped, false)
-          if (GetPedInVehicleSeat(vehicle, -1) == ped) then 
-            SetEntityAsMissionEntity(vehicle, true, true )
-            deleteCar(vehicle)
-            if (DoesEntityExist(vehicle)) then 
-              notify("~r~Unable to delete vehicle")
-            else 
-              notify("~g~Vehicle deleted")
-            end 
-          else 
-            notify("~o~You must be in the driver's seat!")
-            end 
-        else
-          local playerPos = GetEntityCoords(ped, 1)
-          local inFrontOfPlayer = GetOffsetFromEntityInWorldCoords(ped, 0.0, distanceToCheck, 0.0)
-          local vehicle = GetVehicleInDirection(playerPos, inFrontOfPlayer)
-          if ( DoesEntityExist(vehicle)) then 
-            SetEntityAsMissionEntity(vehicle, true, true)
-            deleteCar(vehicle)
-            if (DoesEntityExist(vehicle)) then 
-              notify("~r~Unable to delete vehicle")
-            else 
-              notify("~g~Vehicle deleted")
-            end 
-          else 
-            notify("~o~Must be in a vehicle's driver seat to delete it")
-          end 
-        end 
-      end 
-    end
-  end
-end)
-
-function Teleport(menu)
-  local tp = NativeUI.CreateItem("~o~Teleport to Waypoint", "Teleports Ped to Waypoint or use F10")
-  menu:AddItem(tp)
-  menu.OnItemSelect = function(sender, item, index)
-    if item == tp then
+    if IsControlJustReleased(1,  key) then
       local waypoint = GetFirstBlipInfoId(8)
     if DoesBlipExist(waypoint) then
        SetEntityCoords(PlayerPedId(), GetBlipInfoIdCoord(waypoint))
-      end
     end
   end
 end
+end)
+
+function Teleport(menu)
+local tp = NativeUI.CreateItem("~o~Teleport to Waypoint", "Teleports Ped to Waypoint or use F10")
+menu:AddItem(tp)
+menu.OnItemSelect = function(sender, item, index)
+  if item == tp then
+    local waypoint = GetFirstBlipInfoId(8)
+  if DoesBlipExist(waypoint) then
+     SetEntityCoords(PlayerPedId(), GetBlipInfoIdCoord(waypoint))
+    end
+  end
+end
+end
 
 function Emergency(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Emergency Services", "Menu to spawn Emergency Vehicles")
-  local stateList = NativeUI.CreateListItem("Spawn State", state, 1)
-  local emtList = NativeUI.CreateListItem("Spawn EMT", emt, 1)
-  local fireList = NativeUI.CreateListItem("Spawn Fire", fire, 1)
-  submenu:AddItem(stateList)
-  submenu:AddItem(emtList)
-  submenu:AddItem(fireList)
-  submenu.OnListSelect = function(sender, item, index)
-      if item == stateList then
-        if state then
-        local state = item:IndexToItem(index)
-        spawnCar(state)
-        Citizen.Wait(1)
-        notify("~b~Emergency Car Spawned: "..state)
+local submenu = _menuPool:AddSubMenu(menu, "Emergency Services", "Menu to spawn Emergency Vehicles")
+--local stateList = NativeUI.CreateListItem("Spawn State", state, 1)
+local policeList = NativeUI.CreateListItem("Spawn Police", police, 1)
+local sheriffList = NativeUI.CreateListItem("Spawn Sheriff", sheriff, 1)
+local emtList = NativeUI.CreateListItem("Spawn EMT", emt, 1)
+local fireList = NativeUI.CreateListItem("Spawn Fire", fire, 1)
+--submenu:AddItem(stateList)
+submenu:AddItem(policeList)
+submenu:AddItem(sheriffList)
+submenu:AddItem(emtList)
+submenu:AddItem(fireList)
+submenu.OnListSelect = function(sender, item, index)
+    if item == policeList then
+      if police then
+      local police = item:IndexToItem(index)
+      spawnCar(police)
+      Citizen.Wait(1)
+      notify("~b~Emergency Car Spawned: "..police)
+    else
+      notify("~r~Permission not granted!")
+    end
+    else if item == sheriffList then
+      if sheriff then
+      local sheriff = item:IndexToItem(index)
+      spawnCar(sheriff)
+      Citizen.Wait(1)
+      notify("~b~Emergency Car Spawned: "..sheriff)
+    else
+      notify("~r~Permission not granted!")
+    end
+    else if item == stateList then
+      if state then
+      local state = item:IndexToItem(index)
+      spawnCar(state)
+      Citizen.Wait(1)
+      notify("~b~Emergency Car Spawned: "..state)
+    else
+      notify("~r~Permission not granted!")
+    end
+    else if item == emtList then
+      if emt then
+      local emt = item:IndexToItem(index)
+      spawnCar(emt)
+      Citizen.Wait(1)
+      notify("~b~Emergency Car Spawned: "..emt)
+    else
+      notify("~r~Permission not granted!") 
+    end
+    else if item == fireList then
+      if fire then
+      local fire = item:IndexToItem(index)
+      spawnCar(fire)
+      Citizen.Wait(1)
+      notify("~b~Emergency Car Spawned: "..fire)
+    else
+      notify("~r~Permission not granted!") 
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+    local stateloadout = NativeUI.CreateItem("~b~State Loadout", "Gives State Loadout")
+    local coploadout = NativeUI.CreateItem("~b~Police Loadout", "Gives Police Loadout")
+    local sherloadout = NativeUI.CreateItem("~b~Sheriff Loadout", "Gives Sheriff Loadout")
+    local medloadout = NativeUI.CreateItem("~b~EMT Loadout", "Gives EMT Loadout")
+    local fireloadout = NativeUI.CreateItem("~b~Fire Loadout", "Gives Fire Loadout")
+    submenu:AddItem(stateloadout)
+    submenu:AddItem(coploadout)
+    submenu:AddItem(sherloadout)
+    submenu:AddItem(medloadout)
+    submenu:AddItem(fireloadout)
+    submenu.OnItemSelect = function(sender, item, index)
+      if item == coploadout then
+        if police then
+        loadModel("s_m_y_cop_01")
+        giveWeapon("weapon_teargas")
+        giveWeapon("weapon_combatpistol")
+        giveWeapon("weapon_stungun")
+        giveWeapon("weapon_pumpshotgun")
+        giveWeapon("weapon_carbinerifle")
+        giveWeapon("weapon_nightstick")
+        giveWeapon("weapon_flashlight")
+        notify("~b~Police Loadout Given")
       else
         notify("~r~Permission not granted!")
       end
-      else if item == emtList then
-        if emt then
-        local emt = item:IndexToItem(index)
-        spawnCar(emt)
-        Citizen.Wait(1)
-        notify("~b~Emergency Car Spawned: "..emt)
+      else if item == stateloadout then
+        if state then
+          loadModel("s_m_y_sheriff_01")
+          giveWeapon("weapon_teargas")
+          giveWeapon("weapon_combatpistol")
+          giveWeapon("weapon_stungun")
+          giveWeapon("weapon_pumpshotgun")
+          giveWeapon("weapon_carbinerifle")
+          giveWeapon("weapon_nightstick")
+          giveWeapon("weapon_flashlight")
+          notify("~b~Sheriff Loadout Given: ")
+        else
+          notify("~r~Permission not granted!")
+        end
+      else if item == sherloadout then
+        if sheriff then
+        loadModel("s_m_y_sheriff_01")
+        giveWeapon("weapon_teargas")
+        giveWeapon("weapon_combatpistol")
+        giveWeapon("weapon_stungun")
+        giveWeapon("weapon_pumpshotgun")
+        giveWeapon("weapon_carbinerifle")
+        giveWeapon("weapon_nightstick")
+        giveWeapon("weapon_flashlight")
+        notify("~b~Sheriff Loadout Given: ")
       else
-        notify("~r~Permission not granted!") 
+        notify("~r~Permission not granted!")
       end
-      else if item == fireList then
-        if fire then
-        local fire = item:IndexToItem(index)
-        spawnCar(fire)
-        Citizen.Wait(1)
-        notify("~b~Emergency Car Spawned: "..fire)
+      else if item == medloadout then
+        if emt then
+        loadModel("S_M_M_Paramedic_01")
       else
-        notify("~r~Permission not granted!") 
+        notify("~r~Permission not granted!")
+      end
+      else if item == fireloadout then
+        if fire then
+        loadModel("S_M_Y_Fireman_01")
+        giveWeapon("weapon_flaregun")
+        giveWeapon("weapon_fireextinguisher")
+        giveWeapon("weapon_crowbar")
+        notify("~b~Fire Loadout Given")
+      else
+        notify("~r~Permission not granted!")
+      end
+            end
           end
         end
       end
@@ -485,180 +569,273 @@ function Emergency(menu)
 end
 
 function Cars(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu", "Sub Menu for Vehicles")
-  local carsList = NativeUI.CreateListItem("Spawn Cars", cars, 1)
-  --local acarsList = NativeUI.CreateListItem("Spawn Addon Cars", acars, 1, "~r~DONT SPAWN UNTIL EDITED OR ELSE MENU WILL CRASH")
-  submenu:AddItem(carsList)
-  --submenu:AddItem(acarsList)
-  submenu.OnListSelect = function(sender, item, index)
-      if item == carsList then
-        local selectedCar = item:IndexToItem(index)
-        spawnCar(selectedCar)
-        notify("~b~Car Spawned: "..selectedCar)
-      --[[else if item == acarsList then
-        local selectedaCar = item:IndexToItem(index)
-        spawnCar(selectedaCar)
-        notify("~b~Car Spawned: "..selectedaCar)
-      end]]
-    end
-  end
-  local hood = NativeUI.CreateItem("Toggle Vehicle Hood", "Toggles Vehicle's Hood")
-  local trunk = NativeUI.CreateItem("Toggle Trunk", "Toggles Vehicle's Trunk")
-  local engine = NativeUI.CreateItem("Toggle Engine", "Toggles Vehicle's Engine")
-  local fixcar = NativeUI.CreateItem("Fix Vehicle", "Fixes Vehicle Ped is in.")
-  local cleancar = NativeUI.CreateItem("Clean Vehicle", "Cleans Vehicle Ped is in.")
-  local delv = NativeUI.CreateItem("~r~Delete Vehicle", "Deletes Vehicle or use F9")
-  submenu:AddItem(engine)
-  submenu:AddItem(hood)
-  submenu:AddItem(trunk)
-  submenu:AddItem(fixcar)
-  submenu:AddItem(cleancar)
-  submenu:AddItem(delv)
-  submenu.OnItemSelect = function(sender, item, index)
-      if item == fixcar then
-        local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-		    SetVehicleEngineHealth(vehicle, 0)
-		    SetVehicleEngineOn( vehicle, true, true )
-        SetVehicleFixed(vehicle)
-      else if item == engine then
-        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-    if vehicle ~= nil and vehicle ~= 0 and GetPedInVehicleSeat(vehicle, 0) then
-        SetVehicleEngineOn(vehicle, (not GetIsVehicleEngineRunning(vehicle)), false, true)
-    end
-      else if item == hood then
-        local ped = PlayerPedId()
-    local veh = GetVehiclePedIsIn(ped, false)
-    if veh ~= nil and veh ~= 0 and veh ~= 1 then
-        if GetVehicleDoorAngleRatio(veh, 4) > 0 then
-            SetVehicleDoorShut(veh, 4, false)
-        else
-            SetVehicleDoorOpen(veh, 4, false, false)
-        end
-    end
-      else if item == trunk then
-        local ped = PlayerPedId()
-    local veh = GetVehiclePedIsIn(ped, false)
-    if veh ~= nil and veh ~= 0 and veh ~= 1 then
-        if GetVehicleDoorAngleRatio(veh, 5) > 0 then
-            SetVehicleDoorShut(veh, 5, false)
-        else
-            SetVehicleDoorOpen(veh, 5, false, false)
-        end
-    end
-      else if item == cleancar then
-        local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-		    SetVehicleDirtLevel(vehicle, 0)
-      else if item == delv then
-        local ped = GetPlayerPed( -1 )
-
-    if (DoesEntityExist(ped) and not IsEntityDead(ped)) then 
-        local pos = GetEntityCoords(ped)
-        if (IsPedSittingInAnyVehicle(ped)) then 
-          local vehicle = GetVehiclePedIsIn(ped, false)
-          if (GetPedInVehicleSeat(vehicle, -1) == ped) then 
-            SetEntityAsMissionEntity(vehicle, true, true )
-            deleteCar(vehicle)
-            if (DoesEntityExist(vehicle)) then 
-              notify("~r~Unable to delete vehicle... Try Again")
-            else 
-              notify("~g~Vehicle deleted")
-            end 
-          else 
-            notify("~o~You must be in the driver's seat!")
-            end 
-        else
-          local playerPos = GetEntityCoords(ped, 1)
-          local inFrontOfPlayer = GetOffsetFromEntityInWorldCoords(ped, 0.0, distanceToCheck, 0.0)
-          local vehicle = GetVehicleInDirection(playerPos, inFrontOfPlayer)
-          if ( DoesEntityExist(vehicle)) then 
-            SetEntityAsMissionEntity(vehicle, true, true)
-            deleteCar(vehicle)
-            if (DoesEntityExist(vehicle)) then 
-              notify("~r~Unable to delete vehicle... Try Again")
-            else 
-              notify("~g~Vehicle deleted")
-            end 
-          else 
-            notify("~o~Must be in the driver's seat!")
-            end 
-          end 
-        end 
-      end
-    end
-  end
-        end
-      end
-    end
-  end
-seats = {-1,0,1,2}
-  local seat = NativeUI.CreateSliderItem("Change Seats", seats, 1)
-  submenu:AddItem(seat)
-  submenu.OnSliderChange = function(sender, item, index)
-      if item == seat then
-        vehSeat = item:IndexToItem(index)
-        local pedsCar = GetVehiclePedIsIn(GetPlayerPed(-1),false)
-        SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
-      end
+local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu", "Sub Menu for Vehicles")
+local carsList = NativeUI.CreateListItem("Spawn Cars", cars, 1)
+--local acarsList = NativeUI.CreateListItem("Spawn Addon Cars", acars, 1, "~r~DONT SPAWN UNTIL EDITED OR ELSE MENU WILL CRASH")
+submenu:AddItem(carsList)
+--submenu:AddItem(acarsList)
+submenu.OnListSelect = function(sender, item, index)
+    if item == carsList then
+      local selectedCar = item:IndexToItem(index)
+      spawnCar(selectedCar)
+      notify("~b~Car Spawned: "..selectedCar)
+    --[[else if item == acarsList then
+      local selectedaCar = item:IndexToItem(index)
+      spawnCar(selectedaCar)
+      notify("~b~Car Spawned: "..selectedaCar)
+    end]]
   end
 end
+local hood = NativeUI.CreateItem("Toggle Vehicle Hood", "Toggles Vehicle's Hood")
+local trunk = NativeUI.CreateItem("Toggle Trunk", "Toggles Vehicle's Trunk")
+local door1 = NativeUI.CreateItem("Toggle Passenger Door", "Opens Front Right Door")
+local door2 = NativeUI.CreateItem("Toggle Driver Door", "Opens Front Left Door")
+local door3 = NativeUI.CreateItem("Toggle Rear Left Door", "Opens Rear Left Door")
+local door4 = NativeUI.CreateItem("Toggle Rear Right Door", "Opens Rear Right Door")
+local engine = NativeUI.CreateItem("Toggle Engine", "Toggles Vehicle's Engine")
+local fixcar = NativeUI.CreateItem("Fix Vehicle", "Fixes Vehicle Ped is in.")
+local cleancar = NativeUI.CreateItem("Clean Vehicle", "Cleans Vehicle Ped is in.")
+local delv = NativeUI.CreateItem("~r~Delete Vehicle", "Deletes Vehicle or use F9")
+submenu:AddItem(fixcar)
+submenu:AddItem(cleancar)
+submenu:AddItem(engine)
+submenu:AddItem(door2)
+submenu:AddItem(door1)
+submenu:AddItem(door3)
+submenu:AddItem(door4)
+submenu:AddItem(hood)
+submenu:AddItem(trunk)
+submenu:AddItem(delv)
+submenu.OnItemSelect = function(sender, item, index)
+    if item == fixcar then
+      local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+      SetVehicleEngineHealth(vehicle, 0)
+      SetVehicleEngineOn( vehicle, true, true )
+      SetVehicleFixed(vehicle)
+    else if item == engine then
+      local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+  if vehicle ~= nil and vehicle ~= 0 and GetPedInVehicleSeat(vehicle, 0) then
+      SetVehicleEngineOn(vehicle, (not GetIsVehicleEngineRunning(vehicle)), false, true)
+  end
+    else if item == door1 then
+      local ped = PlayerPedId()
+      local veh = GetVehiclePedIsIn(ped, false)
+    if veh ~= nil and veh ~= 0 and veh ~= 1 then
+      if GetVehicleDoorAngleRatio(veh, 1) > 0 then
+          SetVehicleDoorShut(veh, 1, false)
+    else
+      SetVehicleDoorOpen(veh, 1, false, false)
+    end
+  end
+  else if item == door2 then
+  local ped = PlayerPedId()
+  local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+  if GetVehicleDoorAngleRatio(veh, 0) > 0 then
+      SetVehicleDoorShut(veh, 0, false)
+else
+  SetVehicleDoorOpen(veh, 0, false, false)
+    end
+  end
+else if item == door3 then
+  local ped = PlayerPedId()
+  local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+  if GetVehicleDoorAngleRatio(veh, 2) > 0 then
+      SetVehicleDoorShut(veh, 2, false)
+else
+  SetVehicleDoorOpen(veh, 2, false, false)
+    end
+  end
+else if item == door4 then
+  local ped = PlayerPedId()
+  local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+  if GetVehicleDoorAngleRatio(veh, 3) > 0 then
+      SetVehicleDoorShut(veh, 3, false)
+else
+  SetVehicleDoorOpen(veh, 3, false, false)
+    end
+  end
+    else if item == hood then
+      local ped = PlayerPedId()
+      local veh = GetVehiclePedIsIn(ped, false)
+    if veh ~= nil and veh ~= 0 and veh ~= 1 then
+      if GetVehicleDoorAngleRatio(veh, 4) > 0 then
+          SetVehicleDoorShut(veh, 4, false)
+    else
+      SetVehicleDoorOpen(veh, 4, false, false)
+    end
+  end
+    else if item == trunk then
+      local ped = PlayerPedId()
+  local veh = GetVehiclePedIsIn(ped, false)
+  if veh ~= nil and veh ~= 0 and veh ~= 1 then
+      if GetVehicleDoorAngleRatio(veh, 5) > 0 then
+          SetVehicleDoorShut(veh, 5, false)
+      else
+          SetVehicleDoorOpen(veh, 5, false, false)
+      end
+  end
+    else if item == cleancar then
+      local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+      SetVehicleDirtLevel(vehicle, 0)
+    else if item == delv then
+      local ped = GetPlayerPed( -1 )
+
+  if (DoesEntityExist(ped) and not IsEntityDead(ped)) then 
+      local pos = GetEntityCoords(ped)
+      if (IsPedSittingInAnyVehicle(ped)) then 
+        local vehicle = GetVehiclePedIsIn(ped, false)
+        if (GetPedInVehicleSeat(vehicle, -1) == ped) then 
+          SetEntityAsMissionEntity(vehicle, true, true )
+          deleteCar(vehicle)
+          if (DoesEntityExist(vehicle)) then 
+            notify("~r~Unable to delete vehicle... Try Again")
+          else 
+            notify("~g~Vehicle deleted")
+          end 
+        else 
+          notify("~o~You must be in the driver's seat!")
+          end 
+      else
+        local playerPos = GetEntityCoords(ped, 1)
+        local inFrontOfPlayer = GetOffsetFromEntityInWorldCoords(ped, 0.0, distanceToCheck, 0.0)
+        local vehicle = GetVehicleInDirection(playerPos, inFrontOfPlayer)
+        if ( DoesEntityExist(vehicle)) then 
+          SetEntityAsMissionEntity(vehicle, true, true)
+          deleteCar(vehicle)
+          if (DoesEntityExist(vehicle)) then 
+            notify("~r~Unable to delete vehicle... Try Again")
+          else 
+            notify("~g~Vehicle deleted")
+          end 
+        else 
+          notify("~o~Must be in the driver's seat!")
+          end 
+        end 
+      end 
+    end
+  end
+end
+  end
+    end
+      end
+        end
+      end
+    end
+  end
+end
+seats = {-1,0,1,2}
+local seat = NativeUI.CreateSliderItem("Change Seats", seats, 1)
+submenu:AddItem(seat)
+submenu.OnSliderChange = function(sender, item, index)
+    if item == seat then
+      vehSeat = item:IndexToItem(index)
+      local pedsCar = GetVehiclePedIsIn(GetPlayerPed(-1),false)
+      SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
+    end
+end
+end
+
+
 
 weapons = {
-  "weapon_knife",
-  "weapon_knightstick",
-  "weapon_hammer",
-  "weapon_bat",
-  "weapon_crowbar",
-  "weapon_golfclub",
-  "weapon_pistol",
-  "weapon_combatpistol",
-  "weapon_appistol",
-  "weapon_pistol50",
-  "weapon_microsmg",
-  "weapon_smg",
-  "weapon_assaultsmg",
-  "weapon_assaultrifle",
-  "weapon_carbinerifle",
-  "weapon_advancedrifle",
-  "weapon_pumpshotgun",
-  "weapon_fireextinguisher",
-  "weapon_flare",
-  "weapon_snspistol",
-  "weapon_heavypistol",
-  "weapon_bullpuprifle",
-  "weapon_dagger",
-  "weapon_vintagepistol",
-  "weapon_firework",
-  "weapon_flaregun",
-  "weapon_marksmanpistol",
-  "weapon_knuckle",
-  "weapon_hatchet",
-  "weapon_switchblade",
-  "weapon_revolver",
-  "weapon_battleaxe",
-  "weapon_minismg",
-  "weapon_poolcue",
-  "weapon_wrench",
+"weapon_knife",
+"weapon_knightstick",
+"weapon_hammer",
+"weapon_bat",
+"weapon_crowbar",
+"weapon_golfclub",
+"weapon_pistol",
+"weapon_combatpistol",
+"weapon_appistol",
+"weapon_pistol50",
+"weapon_microsmg",
+"weapon_smg",
+"weapon_assaultsmg",
+"weapon_assaultrifle",
+"weapon_carbinerifle",
+"weapon_advancedrifle",
+"weapon_pumpshotgun",
+"weapon_fireextinguisher",
+"weapon_flare",
+"weapon_snspistol",
+"weapon_heavypistol",
+"weapon_bullpuprifle",
+"weapon_dagger",
+"weapon_vintagepistol",
+"weapon_firework",
+"weapon_flaregun",
+"weapon_marksmanpistol",
+"weapon_knuckle",
+"weapon_hatchet",
+"weapon_switchblade",
+"weapon_revolver",
+"weapon_battleaxe",
+"weapon_minismg",
+"weapon_poolcue",
+"weapon_wrench",
 }
 
 function Weapons(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Weapons Menu", "Sub Menu for Weapons") 
-  local gunsList = NativeUI.CreateListItem("Get Weapons", weapons, 1)
-    submenu.OnListSelect = function(sender, item, index)  
-        if item == gunsList then
-            local selectedGun = item:IndexToItem(index)
-            giveWeapon(selectedGun)
-            notify("Gave Weapon: "..selectedGun)
-      end
-    end
-      local click = NativeUI.CreateItem("~r~Clear Weapon(s)", "Clears Peds Weapons")
-      submenu.OnItemSelect = function (sender, item, index)
-        if item == click then
-          RemoveAllPedWeapons(GetPlayerPed(-1), true)
-          notify("~r~Removed All Weapon(s)")
+local submenu = _menuPool:AddSubMenu(menu, "Weapons Menu", "Sub Menu for Weapons") 
+local gunsList = NativeUI.CreateListItem("Get Weapons", weapons, 1)
+  submenu.OnListSelect = function(sender, item, index)  
+      if item == gunsList then
+          local selectedGun = item:IndexToItem(index)
+          giveWeapon(selectedGun)
+          notify("Gave Weapon: "..selectedGun)
     end
   end
-  submenu:AddItem(gunsList)
-  submenu:AddItem(click)
+    local click = NativeUI.CreateItem("~r~Clear Weapon(s)", "Clears Peds Weapons")
+    local weapon = NativeUI.CreateItem("~b~Give all Weapons")
+    submenu.OnItemSelect = function (sender, item, index)
+      if item == click then
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
+        notify("~r~Removed All Weapon(s)")
+      else if item == weapon then
+        giveWeapon("weapon_knife")
+        giveWeapon("weapon_knightstick")
+        giveWeapon("weapon_hammer")
+        giveWeapon("weapon_bat")
+        giveWeapon("weapon_crowbar")
+        giveWeapon("weapon_golfclub")
+        giveWeapon("weapon_pistol")
+        giveWeapon("weapon_combatpistol")
+        giveWeapon("weapon_appistol")
+        giveWeapon("weapon_pistol50")
+        giveWeapon("weapon_microsmg")
+        giveWeapon("weapon_smg")
+        giveWeapon("weapon_assaultsmg")
+        giveWeapon("weapon_assaultrifle")
+        giveWeapon("weapon_carbinerifle")
+        giveWeapon("weapon_advancedrifle")
+        giveWeapon("weapon_pumpshotgun")
+        giveWeapon("weapon_fireextinguisher")
+        giveWeapon("weapon_flare")
+        giveWeapon("weapon_snspistol")
+        giveWeapon("weapon_heavypistol")
+        giveWeapon("weapon_bullpuprifle")
+        giveWeapon("weapon_dagger")
+        giveWeapon("weapon_vintagepistol")
+        giveWeapon("weapon_firework")
+        giveWeapon("weapon_flaregun")
+        giveWeapon("weapon_marksmanpistol")
+        giveWeapon("weapon_knuckle")
+        giveWeapon("weapon_hatchet")
+        giveWeapon("weapon_switchblade")
+        giveWeapon("weapon_revolver")
+        giveWeapon("weapon_battleaxe")
+        giveWeapon("weapon_minismg")
+        giveWeapon("weapon_poolcue")
+        giveWeapon("weapon_wrench")
+      end
+  end
+end
+submenu:AddItem(gunsList)
+submenu:AddItem(weapon)
+submenu:AddItem(click)
 end
 
 peds = {
@@ -1366,73 +1543,78 @@ peds = {
 
 --Replace following the template u_m_y_tattoo_01 with your addon peds
 --[[
-  TEMPLATE: "",
-  The Template MUST have " before and " after the PEDS spawn code and , to move onto the next line
+TEMPLATE: "",
+The Template MUST have " before and " after the PEDS spawn code and , to move onto the next line
 ]]
 apeds = {
-  "DONT_SPAWN",
+"DONT_SPAWN",
 }
 
 function Options(menu)
-  local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
-  local armour = NativeUI.CreateItem("Get Armour", "Gives Player Ped Armour")
-  local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
-  local tp = NativeUI.CreateItem("Teleport To Waypoint", "Teleports Ped to Waypoint")
-  local godmode = NativeUI.CreateItem("~r~God Mode [On]", "Gives Player Ped God Mode")
-  local godmode2 = NativeUI.CreateItem("~r~God Mode [Off]", "Removes Player Ped God Mode")
-  local gone = NativeUI.CreateItem("~r~Invisible [On]", "Gives Player Ped Invisibility")
-  local gone2 = NativeUI.CreateItem("~r~Invisible [Off]", "Removes Player Ped Invisibility")
-  local nwanted = NativeUI.CreateItem("Never Wanted", "Player Never Wanted")
-  submenu:AddItem(heal)
-  submenu:AddItem(armour)
-  submenu:AddItem(nwanted)
-  submenu:AddItem(godmode)
-  submenu:AddItem(godmode2)
-  submenu:AddItem(gone)
-  submenu:AddItem(gone2)
-  submenu.OnItemSelect = function(sender, item, index)
-    if item == armour then 
-      SetPedArmour(GetPlayerPed(-1), 50)
-      notify("~g~Player Got Armour.")
-    else if item == heal then
-      SetEntityHealth(PlayerPedId(), 200)
-      notify("~g~Player Healed")
-    else if item == godmode then 
-      if allowedToUse then
-        SetEntityInvincible(GetPlayerPed(-1), true)
-        notify("~g~God Mode On")
-      else
-        notify("~r~You don't have permission")
-      end
-    else if item == godmode2 then
-      if allowedToUse then
-        SetEntityInvincible(GetPlayerPed(-1), false)
-        notify("~r~God Mode Off")
-      else
-        notify("~r~You don't have permission.")
-      end
-    else if item == gone then
-    if allowedToUse then
-      SetEntityVisible(GetPlayerPed(-1), false)
-      notify("~g~Player is Invisible")
-    else
-      notify("~r~You dont have permission")
-    end
-    else if item == gone2 then
-      if allowedToUse then
-        SetEntityVisible(GetPlayerPed(-1), true)
-        notify("~r~Player no longer Invisible")
-      else
-        notify("~r~You dont have permission")
-      end
-    else if item == nwanted then
-      if GetPlayerWantedLevel(PlayerId()) ~= 0 then
-        SetPlayerWantedLevel(PlayerId(), 0, false)
-        SetPlayerWantedLevelNow(PlayerId(), false)
-        notify("~g~Never Wanted On")
-    else
-        notify("~r~Never wanted already on")
-                  end
+local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
+local armour = NativeUI.CreateItem("~b~Get Armour", "Gives Player Ped Armour")
+local armour2 = NativeUI.CreateItem("~o~Remove Armour", "Removes Player Ped Armour")
+local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
+local tp = NativeUI.CreateItem("Teleport To Waypoint", "Teleports Ped to Waypoint")
+local godmode = NativeUI.CreateItem("~r~God Mode [On]", "Gives Player Ped God Mode")
+local godmode2 = NativeUI.CreateItem("~r~God Mode [Off]", "Removes Player Ped God Mode")
+local gone = NativeUI.CreateItem("~r~Invisible [On]", "Gives Player Ped Invisibility")
+local gone2 = NativeUI.CreateItem("~r~Invisible [Off]", "Removes Player Ped Invisibility")
+local nwanted = NativeUI.CreateItem("Remove Wanted", "Removes Player Wanted Level")
+submenu:AddItem(heal)
+submenu:AddItem(armour)
+submenu:AddItem(armour2)
+submenu:AddItem(nwanted)
+submenu:AddItem(godmode)
+submenu:AddItem(godmode2)
+submenu:AddItem(gone)
+submenu:AddItem(gone2)
+submenu.OnItemSelect = function(sender, item, index)
+  if item == armour then 
+    SetPedArmour(GetPlayerPed(-1), 50)
+    notify("~g~Player Got Armour.")
+  else if item == armour2 then
+    SetPedArmour(GetPlayerPed(-1), 0)
+    notify("~g~Removed Armour")
+  else if item == heal then
+    SetEntityHealth(PlayerPedId(), 200)
+    notify("~g~Player Healed")
+  else if item == godmode then 
+  if allowedToUse then
+    SetEntityInvincible(GetPlayerPed(-1), true)
+    notify("~g~God Mode On")
+  else
+    notify("~r~You don't have permission")
+  end
+  else if item == godmode2 then
+  if allowedToUse then
+    SetEntityInvincible(GetPlayerPed(-1), false)
+    notify("~r~God Mode Off")
+  else
+    notify("~r~You don't have permission.")
+  end
+  else if item == gone then
+  if allowedToUse then
+    SetEntityVisible(GetPlayerPed(-1), false)
+    notify("~g~Player is Invisible")
+  else
+    notify("~r~You dont have permission")
+  end
+  else if item == gone2 then
+  if allowedToUse then
+    SetEntityVisible(GetPlayerPed(-1), true)
+    notify("~r~Player no longer Invisible")
+  else
+    notify("~r~You dont have permission")
+  end
+  else if item == nwanted then
+  if GetPlayerWantedLevel(PlayerId()) ~= 0 then
+    SetPlayerWantedLevel(PlayerId(), 0, false)
+    SetPlayerWantedLevelNow(PlayerId(), false)
+    notify("~g~Wanteld Level gone")
+  else
+    notify("~r~You are not wanted")
+  end
                 end
               end
             end
@@ -1441,92 +1623,275 @@ function Options(menu)
       end
     end
   end
-  local pedsList = NativeUI.CreateListItem("Change Peds", peds, 1, "Changes Player Ped")
-  --local apedsList = NativeUI.CreateListItem("Change Addon Peds", apeds, 1, "~r~DONT SPAWN UNTIL EDITED OR ELSE MENU WILL CRASH")
-  submenu:AddItem(pedsList)
-  --submenu:AddItem(apedsList)
-  submenu.OnListSelect = function(sender, item, index)
-  if item == pedsList then
-    local selectedPed = item:IndexToItem(index)
-    loadModel(selectedPed)
-    notify("~g~Ped Changed: "..selectedPed)
-  --[[else if item == apedsList then
-    local selectedaPed = item:IndexToItem(index)
-    loadModel(selectedaPed)
-    notify("~g~Ped Changed: "..selectedaPed)
-      end]]
+end
+local pedsList = NativeUI.CreateListItem("Change Peds", peds, 1, "Changes Player Ped")
+--local apedsList = NativeUI.CreateListItem("Change Addon Peds", apeds, 1, "~r~DONT SPAWN UNTIL EDITED OR ELSE MENU WILL CRASH")
+submenu:AddItem(pedsList)
+--submenu:AddItem(apedsList)
+submenu.OnListSelect = function(sender, item, index)
+if item == pedsList then
+  local selectedPed = item:IndexToItem(index)
+  loadModel(selectedPed)
+  notify("~g~Ped Changed: "..selectedPed)
+--[[else if item == apedsList then
+  local selectedaPed = item:IndexToItem(index)
+  loadModel(selectedaPed)
+  notify("~g~Ped Changed: "..selectedaPed)
+    end]]
+  end
+end
+end
+
+function AddMenu_Close(menu)
+	local Item = NativeUI.CreateItem("~r~Close Menu", "")
+   	Item.Activated = function(ParentMenu, SelectedItem)
+   		mainMenu:Visible(not mainMenu:Visible())
+   	end
+	menu:AddItem(Item)
+end
+
+function AddMenu_Civilian(menu)
+  local submenu = _menuPool:AddSubMenu(menu, "Civilian Menu")
+  for i = 1, 1, 1 do
+    local Item = NativeUI.CreateItem("Handsup", "Put your hands up")
+    Item.Activated = function(ParentMenu, SelectedItem)
+      MENU_HANDSUP()
     end
+      submenu:AddItem(Item)
+  local Item = NativeUI.CreateItem("Kneel Handsup", "Put your hands up on knees")
+    Item.Activated = function(ParentMenu, SelectedItem)
+      MENU_HANDSUPKNEES()
+    end
+      submenu:AddItem(Item)
   end
 end
 
+  function MENU_HANDSUP()
+  local lPed = GetPlayerPed(-1)
+    if DoesEntityExist(lPed) and not IsPedInAnyVehicle(lPed) then
+      if not IsEntityPlayingAnim(lPed, "mp_arresting", "idle", 3) then
+        RequestAnimDict("random@mugging3")
+        while not HasAnimDictLoaded("random@mugging3") do
+          Citizen.Wait(100)
+        end
+  
+        if IsEntityPlayingAnim(lPed, "random@mugging3", "handsup_standing_base", 3) then
+          ClearPedSecondaryTask(lPed)
+        else
+          TaskPlayAnim(lPed, "random@mugging3", "handsup_standing_base", 8.0, -8, -1, 49, 0, 0, 0, 0)
+        end
+      end
+    elseif IsPedInAnyVehicle(lPed) then
+      ShowNotification(' ~w~Please exit the vehicle to be avail to use this animation.')
+    end
+  end
+
+  function MENU_HANDSUPKNEES()
+    local player = GetPlayerPed( -1 )
+    if ( DoesEntityExist( player ) and not IsEntityDead( player )) and not IsPedInAnyVehicle(player) then
+          loadAnimDict( "random@arrests" )
+      loadAnimDict( "random@arrests@busted" )
+      if ( IsEntityPlayingAnim( player, "random@arrests@busted", "idle_a", 3 ) ) then
+        TaskPlayAnim( player, "random@arrests@busted", "exit", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
+        Wait (3000)
+              TaskPlayAnim( player, "random@arrests", "kneeling_arrest_get_up", 8.0, 1.0, -1, 128, 0, 0, 0, 0 )
+          else
+              TaskPlayAnim( player, "random@arrests", "idle_2_hands_up", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
+        Wait (4000)
+              TaskPlayAnim( player, "random@arrests", "kneeling_arrest_idle", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
+        Wait (500)
+        TaskPlayAnim( player, "random@arrests@busted", "enter", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
+        Wait (1000)
+        TaskPlayAnim( player, "random@arrests@busted", "idle_a", 8.0, 1.0, -1, 9, 0, 0, 0, 0 )
+          end
+    elseif IsPedInAnyVehicle(player) then
+      ShowNotification(' ~w~Please exit the vehicle to be avail to use this animation.')
+    end
+  end
+
+  function loadAnimDict( dict )
+      while ( not HasAnimDictLoaded( dict ) ) do
+          RequestAnimDict( dict )
+          Citizen.Wait( 5 )
+      end
+  end
+  
 Emergency(mainMenu)
+AddMenu_Civilian(mainMenu)
 Options(mainMenu)
 Cars(mainMenu)
 Weapons(mainMenu)
 Teleport(mainMenu)
+AddMenu_Close(mainMenu)
+_menuPool:RefreshIndex()
+_menuPool:MouseControlsEnabled(false)
+_menuPool:ControlDisablingEnabled(false)
 _menuPool:RefreshIndex()
 
 Citizen.CreateThread(function()
-    while true do
-      Citizen.Wait(0)
-      _menuPool:ProcessMenus()
-      if IsControlJustPressed(1, 167) then
-        mainMenu:Visible(not mainMenu:Visible())
-        end
-    end
+  while true do
+    Citizen.Wait(0)
+    _menuPool:ProcessMenus()
+    if IsControlJustPressed(1, 167) then
+      mainMenu:Visible(not mainMenu:Visible())
+      end
+  end
 end)
 
 
 function notify(text)
-  SetNotificationTextEntry("STRING")
-  AddTextComponentString(text)
-  DrawNotification(true, true)
+SetNotificationTextEntry("STRING")
+AddTextComponentString(text)
+DrawNotification(true, true)
 end
 
 function giveWeapon(hash)
-  GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(hash), 999, false, false)
+GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(hash), 999, false, false)
 end
 
 function spawnCar(car)
-  local car = GetHashKey(car)
+local car = GetHashKey(car)
 
 RequestModel(car)
 while not HasModelLoaded(car) do
-  RequestModel(car)
-  Citizen.Wait(50)
-  end
+RequestModel(car)
+Citizen.Wait(50)
+end
 
 local x, y, z = table.unpack(GetEntityCoords(PlayerPedId(), false))
 local vehicle = CreateVehicle(car, x + 2, y + 2, z + 1, GetEntityHeading(PlayerPedId()), true, false)
 SetPedIntoVehicle(PlayerPedId(), vehicle, -1)
-    
-    SetEntityAsNoLongerNeeded(vehicle)
-    SetModelAsNoLongerNeeded(vehicleName)
+  
+  SetEntityAsNoLongerNeeded(vehicle)
+  SetModelAsNoLongerNeeded(vehicleName)
 end
 
 function loadModel(modelHash)
-  local model = GetHashKey(modelHash)
+local model = GetHashKey(modelHash)
+RequestModel(model)
+while not HasModelLoaded(model) do
   RequestModel(model)
-  while not HasModelLoaded(model) do
-    RequestModel(model)
-    Citizen.Wait(0)
-  end
-  SetPlayerModel(localPed, model)
-  SetModelAsNoLongerNeeded(model)
+  Citizen.Wait(0)
+end
+SetPlayerModel(localPed, model)
+SetModelAsNoLongerNeeded(model)
 end
 
 function deleteCar( entity )
-  Citizen.InvokeNative( 0xEA386986E786A54F, Citizen.PointerValueIntInitialized( entity ) )
+Citizen.InvokeNative( 0xEA386986E786A54F, Citizen.PointerValueIntInitialized( entity ) )
 end
 
 function GetVehicleInDirection( coordFrom, coordTo )
-  local rayHandle = CastRayPointToPoint( coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z, 10, GetPlayerPed( -1 ), 0 )
-  local _, _, _, _, vehicle = GetRaycastResult( rayHandle )
-  return vehicle
+local rayHandle = CastRayPointToPoint( coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z, 10, GetPlayerPed( -1 ), 0 )
+local _, _, _, _, vehicle = GetRaycastResult( rayHandle )
+return vehicle
 end
 
 function ShowNotification( text )
-  SetNotificationTextEntry( "STRING" )
-  AddTextComponentString( text )
-  DrawNotification( false, false )
+SetNotificationTextEntry( "STRING" )
+AddTextComponentString( text )
+DrawNotification( false, false )
 end
+  
+  Citizen.CreateThread(function()
+      while true do
+          Citizen.Wait(0) 
+          HandcuffLoop()
+          DragLoop()
+      end
+  end)
+
+  function loadAnim( dict )
+      while ( not HasAnimDictLoaded( dict ) ) do
+          RequestAnimDict( dict )
+          Citizen.Wait( 5 )
+      end
+  end
+
+  function HandcuffLoop()
+      if isPedHandcuffed then
+          if IsEntityPlayingAnim(GetPlayerPed(PlayerId()), "mp_arresting", "idle", 3) and isPedHandcuffed == true then
+              DisableControlAction(0,21,true) -- disable sprint
+              DisableControlAction(0,24,true) -- disable attack
+              DisableControlAction(0,25,true) -- disable aim
+              DisableControlAction(0,47,true) -- disable weapon
+              DisableControlAction(0,58,true) -- disable weapon
+              DisableControlAction(0,263,true) -- disable melee
+              DisableControlAction(0,264,true) -- disable melee
+              DisableControlAction(0,257,true) -- disable melee
+              DisableControlAction(0,140,true) -- disable melee
+              DisableControlAction(0,141,true) -- disable melee
+              DisableControlAction(0,142,true) -- disable melee
+              DisableControlAction(0,143,true) -- disable melee
+              DisableControlAction(0,75,true) -- disable exit vehicle
+              DisableControlAction(27,75,true) -- disable exit vehicle
+  
+              DisableControlAction(0,32,true) -- move (w)
+              DisableControlAction(0,34,true) -- move (a)
+              DisableControlAction(0,33,true) -- move (s)
+              DisableControlAction(0,35,true) -- move (d)
+          elseif not IsEntityPlayingAnim(GetPlayerPed(PlayerId()), "mp_arresting", "idle", 3) and isPedHandcuffed == true then
+              local lPed = GetPlayerPed(-1)
+              TaskPlayAnim(lPed, "mp_arresting", "idle", 8.0, -8, -1, 49, 0, 0, 0, 0)
+          end
+      else
+          isPedHandcuffed = false
+      end
+      if IsPedRagdoll(GetPlayerPed(PlayerId())) and IsEntityPlayingAnim(GetPlayerPed(PlayerId()), "mp_arresting", "idle", 3) and isPedHandcuffed == true then
+          local lPed = GetPlayerPed(-1)
+          TaskPlayAnim(lPed, "mp_arresting", "idle", 8.0, -8, -1, 49, 0, 0, 0, 0)
+      end
+  end
+
+  function DragLoop()
+      if drag then
+          local PED = GetPlayerPed(GetPlayerFromServerId(officerDrag))
+          local MYPED = GetPlayerPed(-1)
+  
+          AttachEntityToEntity(MYPED, PED, 4103, 11816, 0.48, 0.00, 0.0, 0.0, 0.0, false, false, false, false, 2, false)
+      else
+          DetachEntity(GetPlayerPed(-1), true, false)
+      end
+  end
+  
+  function ShowNotification(text)
+      SetNotificationTextEntry("STRING")
+      AddTextComponentString(text)
+      DrawNotification(false, false)
+  end
+  
+  function GetClosePlayer()
+      local players = GetPlayers()
+      local closestDistance = -1
+      local closestPlayer = -1
+      local ped = GetPlayerPed(-1)
+      local pedCoords = GetEntityCoords(ped, 0)
+  
+      for index, value in ipairs(players) do
+          local target = GetPlayerPed(value)
+  
+          if target ~= ped then
+              local targetCoords = GetEntityCoords(GetPlayerPed(value), 0)
+              local distance = Vdist(targetCoords['x'], targetCoords['y'], targetCoords['z'], pedCoords['x'], pedCoords['y'], pedCoords['z'])
+  
+              if closestDistance == -1 or closestDistance > distance then
+                  closestPlayer = value
+                  closestDistance = distance
+              end
+          end
+      end
+  
+      return closestPlayer, closestDistance
+  
+  end
+
+  function GetPlayers()
+      local players = {}
+      for i = 0 , 31 do
+          if NetworkIsPlayerActive(i) then
+              table.insert(players, i)
+          end
+      end
+  
+      return players
+  end
