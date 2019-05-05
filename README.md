@@ -27,6 +27,7 @@ Visit Releases to view the Changelog!
 # SimpleMenu Group
 add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.state allow --Name of Person Here
+add_ace identifier.steam:[Steam HEX Here] simplemenu.sheriff allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.emt allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.fire allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of Person Here
