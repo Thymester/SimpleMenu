@@ -52,6 +52,15 @@ AddEventHandler("state:getIsState", function()
     end
 end)
 
+RegisterServerEvent("highway:getIsHighway")
+AddEventHandler("highway:getIsHighway", function()
+    if IsPlayerAceAllowed(source, "simplemenu.highway") then
+        TriggerClientEvent("highway:returnIsHighway", source, true)
+    else
+        TriggerClientEvent("highway:returnIsHighway", source, false)
+    end
+end)
+
 function SendWebhookMessage(webhook,message)
     if webhook ~= "false" then
         PerformHttpRequest(webhook, function(err, text, headers) end, 'POST', json.encode({content = message}), { ['Content-Type'] = 'application/json' })
