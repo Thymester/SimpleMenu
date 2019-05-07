@@ -52,6 +52,16 @@ AddEventHandler("state:returnIsState", function(isAllowed)
   state = isAllowed
 end)
 
+local highway = false
+Citizen.CreateThread(function()
+  TriggerServerEvent("highway:getIsHighway")
+end)
+
+RegisterNetEvent("highway:returnIsHighway")
+AddEventHandler("highway:returnIsHighway", function(isAllowed)
+  highway = isAllowed
+end)
+
 local emt = false
 Citizen.CreateThread(function()
   TriggerServerEvent("emt:getIsEmt")
@@ -374,23 +384,27 @@ cars = {
 --[[Change these accordingly. Only use your server's Emergency Spawn Codes. (These are default GTA so no issues will arise if you keep them but is highly suggested to use
 your own so you can have custom Emergency Services cars)]]
 police = {
-"police"
+
 }
 
 sheriff = {
-"sheriff"
+
 }
 
 state = {
-"fbi"
+
+}
+
+highway = {
+
 }
 
 emt = {
-"ambulance"
+
 }
 
 fire = {
-"firetruk"
+
 }
 
 --Replace DONT_SPAWN following the template with your addons spawn codes
@@ -398,7 +412,7 @@ fire = {
 The Template MUST have " before and " after the CARS spawn code and , to move onto the next line
 ]]
 acars = {
-"DONT_SPAWN",
+
 }
 
 Citizen.CreateThread(function()
@@ -428,17 +442,19 @@ end
 end
 
 function Emergency(menu)
-local submenu = _menuPool:AddSubMenu(menu, "Emergency Services", "Menu to spawn Emergency Vehicles")
---local stateList = NativeUI.CreateListItem("Spawn State", state, 1)
+local submenu = _menuPool:AddSubMenu(menu, "Emergency Services", "Menu to spawn Emergency Vehicles & Loadouts")
+local stateList = NativeUI.CreateListItem("Spawn State", state, 1)
+local highwayList = NativeUI.CreateListItem("Spawn Highway", highway, 1)
 local policeList = NativeUI.CreateListItem("Spawn Police", police, 1)
 local sheriffList = NativeUI.CreateListItem("Spawn Sheriff", sheriff, 1)
 local emtList = NativeUI.CreateListItem("Spawn EMT", emt, 1)
 local fireList = NativeUI.CreateListItem("Spawn Fire", fire, 1)
 --submenu:AddItem(stateList)
-submenu:AddItem(policeList)
-submenu:AddItem(sheriffList)
-submenu:AddItem(emtList)
-submenu:AddItem(fireList)
+--submenu:AddItem(highwayList)
+--submenu:AddItem(policeList)
+--submenu:AddItem(sheriffList)
+--submenu:AddItem(emtList)
+--submenu:AddItem(fireList)
 submenu.OnListSelect = function(sender, item, index)
     if item == policeList then
       if police then
@@ -446,6 +462,15 @@ submenu.OnListSelect = function(sender, item, index)
       spawnCar(police)
       Citizen.Wait(1)
       notify("~b~Emergency Car Spawned: "..police)
+    else
+      notify("~r~Permission not granted!")
+    end
+    else if item == highwayList then 
+      if highway then
+        local highway = item:IndexToItem(index)
+        spawnCar(highway)
+        Citizen.Wait(1)
+        notify("~b~Emergency Car Spawned: "..highway)
     else
       notify("~r~Permission not granted!")
     end
@@ -484,6 +509,7 @@ submenu.OnListSelect = function(sender, item, index)
       notify("~b~Emergency Car Spawned: "..fire)
     else
       notify("~r~Permission not granted!") 
+                  end
                 end
               end
             end
@@ -492,11 +518,13 @@ submenu.OnListSelect = function(sender, item, index)
       end
     end
     local stateloadout = NativeUI.CreateItem("~b~State Loadout", "Gives State Loadout")
+    local hwayloadout = NativeUI.CreateItem("~b~Highway Patrol Loadout", "Gives Highway Patrol Loadout")
     local coploadout = NativeUI.CreateItem("~b~Police Loadout", "Gives Police Loadout")
     local sherloadout = NativeUI.CreateItem("~b~Sheriff Loadout", "Gives Sheriff Loadout")
     local medloadout = NativeUI.CreateItem("~b~EMT Loadout", "Gives EMT Loadout")
     local fireloadout = NativeUI.CreateItem("~b~Fire Loadout", "Gives Fire Loadout")
     submenu:AddItem(stateloadout)
+    submenu:AddItem(hwayloadout)
     submenu:AddItem(coploadout)
     submenu:AddItem(sherloadout)
     submenu:AddItem(medloadout)
@@ -504,6 +532,8 @@ submenu.OnListSelect = function(sender, item, index)
     submenu.OnItemSelect = function(sender, item, index)
       if item == coploadout then
         if police then
+          loaded = not loaded
+          if loaded then
         loadModel("s_m_y_cop_01")
         giveWeapon("weapon_teargas")
         giveWeapon("weapon_combatpistol")
@@ -514,10 +544,16 @@ submenu.OnListSelect = function(sender, item, index)
         giveWeapon("weapon_flashlight")
         notify("~b~Police Loadout Given")
       else
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
+        notify("~r~Loadout is now Removed")
+      end
+      else
         notify("~r~Permission not granted!")
       end
       else if item == stateloadout then
         if state then
+          loaded2 = not loaded2
+          if loaded2 then
           loadModel("s_m_y_sheriff_01")
           giveWeapon("weapon_teargas")
           giveWeapon("weapon_combatpistol")
@@ -528,10 +564,16 @@ submenu.OnListSelect = function(sender, item, index)
           giveWeapon("weapon_flashlight")
           notify("~b~Sheriff Loadout Given: ")
         else
+          RemoveAllPedWeapons(GetPlayerPed(-1), true)
+          notify("~r~Loadout is now Removed")
+        end
+        else
           notify("~r~Permission not granted!")
         end
       else if item == sherloadout then
         if sheriff then
+        loaded3 = not loaded3
+        if loaded3 then
         loadModel("s_m_y_sheriff_01")
         giveWeapon("weapon_teargas")
         giveWeapon("weapon_combatpistol")
@@ -542,24 +584,60 @@ submenu.OnListSelect = function(sender, item, index)
         giveWeapon("weapon_flashlight")
         notify("~b~Sheriff Loadout Given: ")
       else
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
+        notify("~r~Loadout is now Removed")
+      end
+      else
         notify("~r~Permission not granted!")
       end
       else if item == medloadout then
         if emt then
+        loaded4 = not loaded4
+        if loaded4 then
         loadModel("S_M_M_Paramedic_01")
+      else
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
+        notify("~r~Loadout is now Removed")
+      end
       else
         notify("~r~Permission not granted!")
       end
       else if item == fireloadout then
         if fire then
+        loaded5 = not loaded5
+        if loaded5 then
         loadModel("S_M_Y_Fireman_01")
         giveWeapon("weapon_flaregun")
         giveWeapon("weapon_fireextinguisher")
         giveWeapon("weapon_crowbar")
         notify("~b~Fire Loadout Given")
       else
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
+        notify("~r~Loadout is now Removed")
+      end
+      else
         notify("~r~Permission not granted!")
       end
+    else if item == hwayloadout then
+      if sheriff then
+      loaded3 = not loaded3
+      if loaded3 then
+      giveWeapon("weapon_teargas")
+      giveWeapon("weapon_combatpistol")
+      giveWeapon("weapon_stungun")
+      giveWeapon("weapon_pumpshotgun")
+      giveWeapon("weapon_carbinerifle")
+      giveWeapon("weapon_nightstick")
+      giveWeapon("weapon_flashlight")
+      notify("~b~Sheriff Loadout Given: ")
+    else
+      RemoveAllPedWeapons(GetPlayerPed(-1), true)
+      notify("~r~Loadout is now Removed")
+    end
+    else
+      notify("~r~Permission not granted!")
+    end
+              end
             end
           end
         end
@@ -571,7 +649,7 @@ end
 function Cars(menu)
 local submenu = _menuPool:AddSubMenu(menu, "Vehicles Menu", "Sub Menu for Vehicles")
 local carsList = NativeUI.CreateListItem("Spawn Cars", cars, 1)
---local acarsList = NativeUI.CreateListItem("Spawn Addon Cars", acars, 1, "~r~DONT SPAWN UNTIL EDITED OR ELSE MENU WILL CRASH")
+local acarsList = NativeUI.CreateListItem("Spawn Addon Cars", acars, 1, "")
 submenu:AddItem(carsList)
 --submenu:AddItem(acarsList)
 submenu.OnListSelect = function(sender, item, index)
@@ -579,11 +657,11 @@ submenu.OnListSelect = function(sender, item, index)
       local selectedCar = item:IndexToItem(index)
       spawnCar(selectedCar)
       notify("~b~Car Spawned: "..selectedCar)
-    --[[else if item == acarsList then
+    else if item == acarsList then
       local selectedaCar = item:IndexToItem(index)
       spawnCar(selectedaCar)
       notify("~b~Car Spawned: "..selectedaCar)
-    end]]
+    end
   end
 end
 local hood = NativeUI.CreateItem("Toggle Vehicle Hood", "Toggles Vehicle's Hood")
@@ -1552,61 +1630,32 @@ apeds = {
 
 function Options(menu)
 local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
-local armour = NativeUI.CreateItem("~b~Get Armour", "Gives Player Ped Armour")
-local armour2 = NativeUI.CreateItem("~o~Remove Armour", "Removes Player Ped Armour")
+local armour = NativeUI.CreateItem("~b~Get Armour ~w~[~g~On ~w~/~r~ Off~w~]", "Gives Player Ped Armour")
 local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
 local tp = NativeUI.CreateItem("Teleport To Waypoint", "Teleports Ped to Waypoint")
-local godmode = NativeUI.CreateItem("~r~God Mode [On]", "Gives Player Ped God Mode")
-local godmode2 = NativeUI.CreateItem("~r~God Mode [Off]", "Removes Player Ped God Mode")
-local gone = NativeUI.CreateItem("~r~Invisible [On]", "Gives Player Ped Invisibility")
-local gone2 = NativeUI.CreateItem("~r~Invisible [Off]", "Removes Player Ped Invisibility")
 local nwanted = NativeUI.CreateItem("Remove Wanted", "Removes Player Wanted Level")
+local iwanted = NativeUI.CreateItem("Increase Wanted", "Increases Player Wanted Level")
+local suicide = NativeUI.CreateItem("~r~Commit Suicide", "Kills Player")
 submenu:AddItem(heal)
 submenu:AddItem(armour)
-submenu:AddItem(armour2)
+submenu:AddItem(suicide)
 submenu:AddItem(nwanted)
-submenu:AddItem(godmode)
-submenu:AddItem(godmode2)
-submenu:AddItem(gone)
-submenu:AddItem(gone2)
+submenu:AddItem(iwanted)
 submenu.OnItemSelect = function(sender, item, index)
   if item == armour then 
+    armouron = not armouron
+    if armouron then
     SetPedArmour(GetPlayerPed(-1), 50)
     notify("~g~Player Got Armour.")
-  else if item == armour2 then
+  else
     SetPedArmour(GetPlayerPed(-1), 0)
-    notify("~g~Removed Armour")
+    notify("~r~Player Armour Removed")
+  end
+  else if item == suicide then
+    SetEntityHealth(GetPlayerPed(-1), 0)
   else if item == heal then
     SetEntityHealth(PlayerPedId(), 200)
     notify("~g~Player Healed")
-  else if item == godmode then 
-  if allowedToUse then
-    SetEntityInvincible(GetPlayerPed(-1), true)
-    notify("~g~God Mode On")
-  else
-    notify("~r~You don't have permission")
-  end
-  else if item == godmode2 then
-  if allowedToUse then
-    SetEntityInvincible(GetPlayerPed(-1), false)
-    notify("~r~God Mode Off")
-  else
-    notify("~r~You don't have permission.")
-  end
-  else if item == gone then
-  if allowedToUse then
-    SetEntityVisible(GetPlayerPed(-1), false)
-    notify("~g~Player is Invisible")
-  else
-    notify("~r~You dont have permission")
-  end
-  else if item == gone2 then
-  if allowedToUse then
-    SetEntityVisible(GetPlayerPed(-1), true)
-    notify("~r~Player no longer Invisible")
-  else
-    notify("~r~You dont have permission")
-  end
   else if item == nwanted then
   if GetPlayerWantedLevel(PlayerId()) ~= 0 then
     SetPlayerWantedLevel(PlayerId(), 0, false)
@@ -1615,9 +1664,13 @@ submenu.OnItemSelect = function(sender, item, index)
   else
     notify("~r~You are not wanted")
   end
-                end
-              end
-            end
+  else if item == iwanted then
+    local level = GetPlayerWantedLevel(PlayerId())
+    if level < 5 then
+      SetPlayerWantedLevel(PlayerId(), level + 1, false)
+      SetPlayerWantedLevelNow(PlayerId(), true)
+      notify("~b~Wanted level increased")
+    end
           end
         end
       end
@@ -1641,6 +1694,78 @@ if item == pedsList then
   end
 end
 end
+
+function Admin(menu)
+  local submenu = _menuPool:AddSubMenu(menu, "Admin Menu", "Sub Menu for Admin Related Options")
+  local godmode = NativeUI.CreateItem("~r~God Mode ~w~[~g~On~w~ / ~r~Off]", "Gives Player Ped God Mode")
+  --local godmode2 = NativeUI.CreateItem("~r~God Mode [Off]", "Removes Player Ped God Mode")
+  local gone = NativeUI.CreateItem("~r~Invisibility ~w~[~g~On~w~ / ~r~Off]", "Gives Player Ped Invisibility")
+  --local gone2 = NativeUI.CreateItem("~r~Invisible [Off]", "Removes Player Ped Invisibility")
+  local fswim = NativeUI.CreateItem("~o~Fast Swim ~w~[~g~On~w~ / ~r~Off]", "Swim Faster")
+  local fsprint = NativeUI.CreateItem("~o~Fast Sprint ~w~[~g~On~w~ / ~r~Off]", "Spring Faster")
+  submenu:AddItem(godmode)
+  submenu:AddItem(gone)
+  submenu:AddItem(fsprint)
+  submenu:AddItem(fswim)
+  submenu.OnItemSelect = function(sender, item, index)
+  if item == godmode then 
+    if allowedToUse then
+      god = not god
+      if god then
+      SetEntityInvincible(GetPlayerPed(-1), true)
+      notify("~g~God Mode On")
+    else
+      SetEntityInvincible(GetPlayerPed(-1), false)
+      notify("~r~God Mode Off")
+    end
+    else
+      notify("~r~You don't have permission")
+    end
+   else if item == gone then 
+      if allowedToUse then
+        Invisible = not Invisible
+        if Invisible then
+        SetEntityVisible(GetPlayerPed(-1), false)
+        notify("~g~Invisibility is now On")
+      else
+        SetEntityVisible(GetPlayerPed(-1), true)
+        notify("~r~Invisibility is now Off")
+      end
+      else
+        notify("~r~You don't have permission")
+      end
+    else if item == fswim then
+      if allowedToUse then
+      fastSwim = not fastSwim
+      if fastSwim then
+        SetSwimMultiplierForPlayer(PlayerId(), 1.49)
+        notify("Fast Swim is now On")
+      else
+        SetSwimMultiplierForPlayer(PlayerId(), 1.0)
+        notify("~r~Fast Swim is now Off")
+      end
+      else
+        notify("~r~You don't have permission") 
+      end
+      else if item == fsprint then
+        if allowedToUse then
+        fastSprint = not fastSprint
+        if fastSprint then
+          SetRunSprintMultiplierForPlayer(PlayerId(), 1.49)
+          notify("Fast Sprint is now On")
+      else
+        SetRunSprintMultiplierForPlayer(PlayerId(), 1.0)
+        notify("~r~Fast Sprint is now Off")
+      end
+      else
+        notify("~r~You don't have permission") 
+      end
+            end
+          end
+        end
+      end
+    end
+  end
 
 function AddMenu_Close(menu)
 	local Item = NativeUI.CreateItem("~r~Close Menu", "")
@@ -1672,7 +1797,7 @@ end
       if not IsEntityPlayingAnim(lPed, "mp_arresting", "idle", 3) then
         RequestAnimDict("random@mugging3")
         while not HasAnimDictLoaded("random@mugging3") do
-          Citizen.Wait(100)
+          Citizen.Wait(50)
         end
   
         if IsEntityPlayingAnim(lPed, "random@mugging3", "handsup_standing_base", 3) then
@@ -1693,15 +1818,15 @@ end
       loadAnimDict( "random@arrests@busted" )
       if ( IsEntityPlayingAnim( player, "random@arrests@busted", "idle_a", 3 ) ) then
         TaskPlayAnim( player, "random@arrests@busted", "exit", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
-        Wait (3000)
+        Wait (50)
               TaskPlayAnim( player, "random@arrests", "kneeling_arrest_get_up", 8.0, 1.0, -1, 128, 0, 0, 0, 0 )
           else
               TaskPlayAnim( player, "random@arrests", "idle_2_hands_up", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
-        Wait (4000)
+        Wait (75)
               TaskPlayAnim( player, "random@arrests", "kneeling_arrest_idle", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
         Wait (500)
         TaskPlayAnim( player, "random@arrests@busted", "enter", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
-        Wait (1000)
+        Wait (500)
         TaskPlayAnim( player, "random@arrests@busted", "idle_a", 8.0, 1.0, -1, 9, 0, 0, 0, 0 )
           end
     elseif IsPedInAnyVehicle(player) then
@@ -1713,9 +1838,12 @@ end
       while ( not HasAnimDictLoaded( dict ) ) do
           RequestAnimDict( dict )
           Citizen.Wait( 5 )
-      end
-  end
-  
+    end
+end
+
+
+
+Admin(mainMenu)
 Emergency(mainMenu)
 AddMenu_Civilian(mainMenu)
 Options(mainMenu)
@@ -1738,6 +1866,19 @@ Citizen.CreateThread(function()
   end
 end)
 
+--Perm Version of the above!
+
+--[[Citizen.CreateThread(function()
+  while true do
+      Citizen.Wait(0)
+      _menuPool:ProcessMenus()
+      if IsControlJustPressed(1, 167) then
+      if allowedToUse then
+          mainMenu:Visible(not mainMenu:Visible())
+end
+      end
+  end
+end)]]
 
 function notify(text)
 SetNotificationTextEntry("STRING")
