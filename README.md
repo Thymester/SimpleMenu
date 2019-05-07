@@ -27,6 +27,7 @@ Visit Releases to view the Changelog!
 # SimpleMenu Group
 add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.state allow --Name of Person Here
+add_ace identifier.steam:[Steam HEX Here] simplemenu.highway allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.sheriff allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.emt allow --Name of Person Here
 add_ace identifier.steam:[Steam HEX Here] simplemenu.fire allow --Name of Person Here
@@ -35,11 +36,25 @@ add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of P
 
 # How to add Emergency Services Cars
 
-1: Go to lines 356 --> 366
+1: Go to lines 386 --> 406
 
 2: When you go there add the Emergency Services spawn codes (On your server) to be able to spawn them in-game
 
 3: Must reload script after changes
+
+# How to get Emergency Loadouts
+
+1: Go to 452 --> 457
+
+2: Uncomment those lines by removing the two "--" before each 'submenu:AddItem()
+
+# How to get Addon Peds
+
+1: Go to line 1681 and uncomment it
+
+2: Go to line 1683 and uncomment it
+
+3: Go to line 1689 and uncomment it which is commented from 1689 --> 1693 (Remove "--[[" and "]]")
 
 # Ace Permissions are added to the following.
 
