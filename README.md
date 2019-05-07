@@ -34,6 +34,14 @@ add_ace identifier.steam:[Steam HEX Here] simplemenu.fire allow --Name of Person
 add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of Person Here
 ```
 
+# How to ONLY allow Admins to Open the Menu
+
+1: Go to line 1871
+
+2: Uncomment lines 1871 --> 1881
+
+NOTE: To uncomment take out "--[[" and "]]"
+
 # How to add Emergency Services Cars
 
 1: Go to lines 386 --> 406
