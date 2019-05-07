@@ -74,6 +74,8 @@ NOTE: To uncomment take out "--[[" and "]]"
 
 4: Invisibility
 
+NOTE: There may or may not be more added from updates.
+
 # How to remove God Mode & Invisibility
 
 **Removed due to Ace Permissions now being SUPPORTED!**
