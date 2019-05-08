@@ -384,7 +384,7 @@ cars = {
 --[[Change these accordingly. Only use your server's Emergency Spawn Codes. (These are default GTA so no issues will arise if you keep them but is highly suggested to use
 your own so you can have custom Emergency Services cars)]]
 police = {
-
+  
 }
 
 sheriff = {
@@ -443,6 +443,7 @@ end
 
 function Emergency(menu)
 local submenu = _menuPool:AddSubMenu(menu, "Emergency Services", "Menu to spawn Emergency Vehicles & Loadouts")
+local othermenu = _menuPool:AddSubMenu(submenu, "~b~Emergency Loadouts")
 local stateList = NativeUI.CreateListItem("Spawn State", state, 1)
 local highwayList = NativeUI.CreateListItem("Spawn Highway", highway, 1)
 local policeList = NativeUI.CreateListItem("Spawn Police", police, 1)
@@ -517,19 +518,19 @@ submenu.OnListSelect = function(sender, item, index)
         end
       end
     end
-    local stateloadout = NativeUI.CreateItem("~b~State Loadout", "Gives State Loadout")
-    local hwayloadout = NativeUI.CreateItem("~b~Highway Patrol Loadout", "Gives Highway Patrol Loadout")
-    local coploadout = NativeUI.CreateItem("~b~Police Loadout", "Gives Police Loadout")
-    local sherloadout = NativeUI.CreateItem("~b~Sheriff Loadout", "Gives Sheriff Loadout")
-    local medloadout = NativeUI.CreateItem("~b~EMT Loadout", "Gives EMT Loadout")
-    local fireloadout = NativeUI.CreateItem("~b~Fire Loadout", "Gives Fire Loadout")
-    submenu:AddItem(stateloadout)
-    submenu:AddItem(hwayloadout)
-    submenu:AddItem(coploadout)
-    submenu:AddItem(sherloadout)
-    submenu:AddItem(medloadout)
-    submenu:AddItem(fireloadout)
-    submenu.OnItemSelect = function(sender, item, index)
+    local stateloadout = NativeUI.CreateItem("State Loadout", "Gives State Loadout")
+    local hwayloadout = NativeUI.CreateItem("Highway Patrol Loadout", "Gives Highway Patrol Loadout")
+    local coploadout = NativeUI.CreateItem("Police Loadout", "Gives Police Loadout")
+    local sherloadout = NativeUI.CreateItem("Sheriff Loadout", "Gives Sheriff Loadout")
+    local medloadout = NativeUI.CreateItem("EMT Loadout", "Gives EMT Loadout")
+    local fireloadout = NativeUI.CreateItem("Fire Loadout", "Gives Fire Loadout")
+    othermenu:AddItem(stateloadout)
+    othermenu:AddItem(hwayloadout)
+    othermenu:AddItem(coploadout)
+    othermenu:AddItem(sherloadout)
+    othermenu:AddItem(medloadout)
+    othermenu:AddItem(fireloadout)
+    othermenu.OnItemSelect = function(sender, item, index)
       if item == coploadout then
         if police then
           loaded = not loaded
@@ -664,6 +665,7 @@ submenu.OnListSelect = function(sender, item, index)
     end
   end
 end
+local othermenu = _menuPool:AddSubMenu(submenu, "~b~Vehicle Controls")
 local hood = NativeUI.CreateItem("Toggle Vehicle Hood", "Toggles Vehicle's Hood")
 local trunk = NativeUI.CreateItem("Toggle Trunk", "Toggles Vehicle's Trunk")
 local door1 = NativeUI.CreateItem("Toggle Passenger Door", "Opens Front Right Door")
@@ -677,84 +679,18 @@ local delv = NativeUI.CreateItem("~r~Delete Vehicle", "Deletes Vehicle or use F9
 submenu:AddItem(fixcar)
 submenu:AddItem(cleancar)
 submenu:AddItem(engine)
-submenu:AddItem(door2)
-submenu:AddItem(door1)
-submenu:AddItem(door3)
-submenu:AddItem(door4)
-submenu:AddItem(hood)
-submenu:AddItem(trunk)
 submenu:AddItem(delv)
 submenu.OnItemSelect = function(sender, item, index)
-    if item == fixcar then
+  if item == engine then
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+  if vehicle ~= nil and vehicle ~= 0 and GetPedInVehicleSeat(vehicle, 0) then
+    SetVehicleEngineOn(vehicle, (not GetIsVehicleEngineRunning(vehicle)), false, true)
+  end
+  else if item == fixcar then
       local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
       SetVehicleEngineHealth(vehicle, 0)
       SetVehicleEngineOn( vehicle, true, true )
       SetVehicleFixed(vehicle)
-    else if item == engine then
-      local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-  if vehicle ~= nil and vehicle ~= 0 and GetPedInVehicleSeat(vehicle, 0) then
-      SetVehicleEngineOn(vehicle, (not GetIsVehicleEngineRunning(vehicle)), false, true)
-  end
-    else if item == door1 then
-      local ped = PlayerPedId()
-      local veh = GetVehiclePedIsIn(ped, false)
-    if veh ~= nil and veh ~= 0 and veh ~= 1 then
-      if GetVehicleDoorAngleRatio(veh, 1) > 0 then
-          SetVehicleDoorShut(veh, 1, false)
-    else
-      SetVehicleDoorOpen(veh, 1, false, false)
-    end
-  end
-  else if item == door2 then
-  local ped = PlayerPedId()
-  local veh = GetVehiclePedIsIn(ped, false)
-if veh ~= nil and veh ~= 0 and veh ~= 1 then
-  if GetVehicleDoorAngleRatio(veh, 0) > 0 then
-      SetVehicleDoorShut(veh, 0, false)
-else
-  SetVehicleDoorOpen(veh, 0, false, false)
-    end
-  end
-else if item == door3 then
-  local ped = PlayerPedId()
-  local veh = GetVehiclePedIsIn(ped, false)
-if veh ~= nil and veh ~= 0 and veh ~= 1 then
-  if GetVehicleDoorAngleRatio(veh, 2) > 0 then
-      SetVehicleDoorShut(veh, 2, false)
-else
-  SetVehicleDoorOpen(veh, 2, false, false)
-    end
-  end
-else if item == door4 then
-  local ped = PlayerPedId()
-  local veh = GetVehiclePedIsIn(ped, false)
-if veh ~= nil and veh ~= 0 and veh ~= 1 then
-  if GetVehicleDoorAngleRatio(veh, 3) > 0 then
-      SetVehicleDoorShut(veh, 3, false)
-else
-  SetVehicleDoorOpen(veh, 3, false, false)
-    end
-  end
-    else if item == hood then
-      local ped = PlayerPedId()
-      local veh = GetVehiclePedIsIn(ped, false)
-    if veh ~= nil and veh ~= 0 and veh ~= 1 then
-      if GetVehicleDoorAngleRatio(veh, 4) > 0 then
-          SetVehicleDoorShut(veh, 4, false)
-    else
-      SetVehicleDoorOpen(veh, 4, false, false)
-    end
-  end
-    else if item == trunk then
-      local ped = PlayerPedId()
-  local veh = GetVehiclePedIsIn(ped, false)
-  if veh ~= nil and veh ~= 0 and veh ~= 1 then
-      if GetVehicleDoorAngleRatio(veh, 5) > 0 then
-          SetVehicleDoorShut(veh, 5, false)
-      else
-          SetVehicleDoorOpen(veh, 5, false, false)
-      end
-  end
     else if item == cleancar then
       local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
       SetVehicleDirtLevel(vehicle, 0)
@@ -790,17 +726,11 @@ else
           end 
         else 
           notify("~o~Must be in the driver's seat!")
+              end
+            end
           end 
         end 
       end 
-    end
-  end
-end
-  end
-    end
-      end
-        end
-      end
     end
   end
 end
@@ -814,8 +744,81 @@ submenu.OnSliderChange = function(sender, item, index)
       SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
     end
 end
+othermenu:AddItem(door2)
+othermenu:AddItem(door1)
+othermenu:AddItem(door3)
+othermenu:AddItem(door4)
+othermenu:AddItem(hood)
+othermenu:AddItem(trunk)
+othermenu.OnItemSelect = function(sender, item, index)
+if item == door1 then
+  local ped = PlayerPedId()
+  local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+  if GetVehicleDoorAngleRatio(veh, 1) > 0 then
+      SetVehicleDoorShut(veh, 1, false)
+else
+  SetVehicleDoorOpen(veh, 1, false, false)
 end
-
+end
+else if item == door2 then
+local ped = PlayerPedId()
+local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+if GetVehicleDoorAngleRatio(veh, 0) > 0 then
+  SetVehicleDoorShut(veh, 0, false)
+else
+SetVehicleDoorOpen(veh, 0, false, false)
+end
+end
+else if item == door3 then
+local ped = PlayerPedId()
+local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+if GetVehicleDoorAngleRatio(veh, 2) > 0 then
+  SetVehicleDoorShut(veh, 2, false)
+else
+SetVehicleDoorOpen(veh, 2, false, false)
+end
+end
+else if item == door4 then
+local ped = PlayerPedId()
+local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+if GetVehicleDoorAngleRatio(veh, 3) > 0 then
+  SetVehicleDoorShut(veh, 3, false)
+else
+SetVehicleDoorOpen(veh, 3, false, false)
+end
+end
+else if item == hood then
+  local ped = PlayerPedId()
+  local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+  if GetVehicleDoorAngleRatio(veh, 4) > 0 then
+      SetVehicleDoorShut(veh, 4, false)
+else
+  SetVehicleDoorOpen(veh, 4, false, false)
+end
+end
+else if item == trunk then
+  local ped = PlayerPedId()
+local veh = GetVehiclePedIsIn(ped, false)
+if veh ~= nil and veh ~= 0 and veh ~= 1 then
+  if GetVehicleDoorAngleRatio(veh, 5) > 0 then
+      SetVehicleDoorShut(veh, 5, false)
+  else
+      SetVehicleDoorOpen(veh, 5, false, false)
+      end
+    end
+  end
+    end
+      end
+        end
+      end
+    end
+  end
+end
 
 
 weapons = {
@@ -1628,9 +1631,10 @@ apeds = {
 "DONT_SPAWN",
 }
 
-function Options(menu)
+function PlayerMenu(menu)
 local submenu = _menuPool:AddSubMenu(menu, "Player Menu", "Sub Menu for Player Related Options")
-local armour = NativeUI.CreateItem("~b~Get Armour ~w~[~g~On ~w~/~r~ Off~w~]", "Gives Player Ped Armour")
+local othermenu = _menuPool:AddSubMenu(submenu, "~b~Weapons Menu", "Sub Menu for Weapons") 
+local armour = NativeUI.CreateItem("Get Armour ~w~[~g~On ~w~/~r~ Off~w~]", "Gives Player Ped Armour")
 local heal = NativeUI.CreateItem("Heal Player", "Heals Player Ped")
 local tp = NativeUI.CreateItem("Teleport To Waypoint", "Teleports Ped to Waypoint")
 local nwanted = NativeUI.CreateItem("Remove Wanted", "Removes Player Wanted Level")
@@ -1638,9 +1642,9 @@ local iwanted = NativeUI.CreateItem("Increase Wanted", "Increases Player Wanted 
 local suicide = NativeUI.CreateItem("~r~Commit Suicide", "Kills Player")
 submenu:AddItem(heal)
 submenu:AddItem(armour)
-submenu:AddItem(suicide)
 submenu:AddItem(nwanted)
 submenu:AddItem(iwanted)
+submenu:AddItem(suicide)
 submenu.OnItemSelect = function(sender, item, index)
   if item == armour then 
     armouron = not armouron
@@ -1670,7 +1674,7 @@ submenu.OnItemSelect = function(sender, item, index)
       SetPlayerWantedLevel(PlayerId(), level + 1, false)
       SetPlayerWantedLevelNow(PlayerId(), true)
       notify("~b~Wanted level increased")
-    end
+            end
           end
         end
       end
@@ -1691,6 +1695,63 @@ if item == pedsList then
   loadModel(selectedaPed)
   notify("~g~Ped Changed: "..selectedaPed)
     end]]
+  end
+end
+local gunsList = NativeUI.CreateListItem("Get Weapons", weapons, 1)
+othermenu.OnListSelect = function(sender, item, index)  
+      if item == gunsList then
+          local selectedGun = item:IndexToItem(index)
+          giveWeapon(selectedGun)
+          notify("Gave Weapon: "..selectedGun)
+    end
+  end
+    local click = NativeUI.CreateItem("~r~Clear Weapon(s)", "Clears Peds Weapons")
+    local weapon = NativeUI.CreateItem("~b~Give all Weapons", "")
+    othermenu:AddItem(gunsList)
+    othermenu:AddItem(weapon)
+    othermenu:AddItem(click)
+    othermenu.OnItemSelect = function (sender, item, index)
+      if item == click then
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
+        notify("~r~Removed All Weapon(s)")
+      else if item == weapon then
+        giveWeapon("weapon_knife")
+        giveWeapon("weapon_knightstick")
+        giveWeapon("weapon_hammer")
+        giveWeapon("weapon_bat")
+        giveWeapon("weapon_crowbar")
+        giveWeapon("weapon_golfclub")
+        giveWeapon("weapon_pistol")
+        giveWeapon("weapon_combatpistol")
+        giveWeapon("weapon_appistol")
+        giveWeapon("weapon_pistol50")
+        giveWeapon("weapon_microsmg")
+        giveWeapon("weapon_smg")
+        giveWeapon("weapon_assaultsmg")
+        giveWeapon("weapon_assaultrifle")
+        giveWeapon("weapon_carbinerifle")
+        giveWeapon("weapon_advancedrifle")
+        giveWeapon("weapon_pumpshotgun")
+        giveWeapon("weapon_fireextinguisher")
+        giveWeapon("weapon_flare")
+        giveWeapon("weapon_snspistol")
+        giveWeapon("weapon_heavypistol")
+        giveWeapon("weapon_bullpuprifle")
+        giveWeapon("weapon_dagger")
+        giveWeapon("weapon_vintagepistol")
+        giveWeapon("weapon_firework")
+        giveWeapon("weapon_flaregun")
+        giveWeapon("weapon_marksmanpistol")
+        giveWeapon("weapon_knuckle")
+        giveWeapon("weapon_hatchet")
+        giveWeapon("weapon_switchblade")
+        giveWeapon("weapon_revolver")
+        giveWeapon("weapon_battleaxe")
+        giveWeapon("weapon_minismg")
+        giveWeapon("weapon_poolcue")
+        giveWeapon("weapon_wrench")
+        notify("~g~Weapons Given")
+      end
   end
 end
 end
@@ -1841,14 +1902,12 @@ end
     end
 end
 
-
-
 Admin(mainMenu)
 Emergency(mainMenu)
 AddMenu_Civilian(mainMenu)
-Options(mainMenu)
+PlayerMenu(mainMenu)
 Cars(mainMenu)
-Weapons(mainMenu)
+--Weapons(mainMenu)
 Teleport(mainMenu)
 AddMenu_Close(mainMenu)
 _menuPool:RefreshIndex()
@@ -2023,16 +2082,4 @@ end
       end
   
       return closestPlayer, closestDistance
-  
-  end
-
-  function GetPlayers()
-      local players = {}
-      for i = 0 , 31 do
-          if NetworkIsPlayerActive(i) then
-              table.insert(players, i)
-          end
-      end
-  
-      return players
   end
