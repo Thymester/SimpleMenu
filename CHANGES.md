@@ -1,4 +1,3 @@
----------------
 Newest Updates:
 ---------------
 
@@ -97,4 +96,5 @@ Added Teleportation to Waypoint (Either from the Menu or F10 on the Keyboard) [I
 Added Options for Custom Peds & Custom Vehicle Spawning
 
 Removed Mouse Support - [To Prevent random spinning due to mouse being on the border of the screen]
+
 Added Never Wanted
