@@ -429,17 +429,18 @@ end
 end)
 
 function Teleport(menu)
-local tp = NativeUI.CreateItem("~o~Teleport to Waypoint", "Teleports Ped to Waypoint or use F10")
-menu:AddItem(tp)
-menu.OnItemSelect = function(sender, item, index)
-  if item == tp then
-    local waypoint = GetFirstBlipInfoId(8)
-  if DoesBlipExist(waypoint) then
-     SetEntityCoords(PlayerPedId(), GetBlipInfoIdCoord(waypoint))
+  local submenu = _menuPool:AddSubMenu(menu, "Misc Settings", "")
+  local tp = NativeUI.CreateItem("~o~Teleport to Waypoint", "Teleport to Waypoint | ~r~NOTE: ~o~May Teleport underground give it a few.")
+  submenu:AddItem(tp)
+  submenu.OnItemSelect = function(sender, item, index)
+    if item == tp then
+      local waypoint = GetFirstBlipInfoId(8)
+    if DoesBlipExist(waypoint) then
+       SetEntityCoords(PlayerPedId(), GetBlipInfoIdCoord(waypoint))
+      end
     end
   end
-end
-end
+  end
 
 function Emergency(menu)
 local submenu = _menuPool:AddSubMenu(menu, "Emergency Services", "Menu to spawn Emergency Vehicles & Loadouts")
@@ -678,15 +679,9 @@ local cleancar = NativeUI.CreateItem("Clean Vehicle", "Cleans Vehicle Ped is in.
 local delv = NativeUI.CreateItem("~r~Delete Vehicle", "Deletes Vehicle or use F9")
 submenu:AddItem(fixcar)
 submenu:AddItem(cleancar)
-submenu:AddItem(engine)
 submenu:AddItem(delv)
 submenu.OnItemSelect = function(sender, item, index)
-  if item == engine then
-    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-  if vehicle ~= nil and vehicle ~= 0 and GetPedInVehicleSeat(vehicle, 0) then
-    SetVehicleEngineOn(vehicle, (not GetIsVehicleEngineRunning(vehicle)), false, true)
-  end
-  else if item == fixcar then
+    if item == fixcar then
       local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
       SetVehicleEngineHealth(vehicle, 0)
       SetVehicleEngineOn( vehicle, true, true )
@@ -726,7 +721,6 @@ submenu.OnItemSelect = function(sender, item, index)
           end 
         else 
           notify("~o~Must be in the driver's seat!")
-              end
             end
           end 
         end 
@@ -744,6 +738,7 @@ submenu.OnSliderChange = function(sender, item, index)
       SetPedIntoVehicle(PlayerPedId(), pedsCar, vehSeat)
     end
 end
+othermenu:AddItem(engine)
 othermenu:AddItem(door2)
 othermenu:AddItem(door1)
 othermenu:AddItem(door3)
@@ -751,7 +746,12 @@ othermenu:AddItem(door4)
 othermenu:AddItem(hood)
 othermenu:AddItem(trunk)
 othermenu.OnItemSelect = function(sender, item, index)
-if item == door1 then
+  if item == engine then
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+  if vehicle ~= nil and vehicle ~= 0 and GetPedInVehicleSeat(vehicle, 0) then
+    SetVehicleEngineOn(vehicle, (not GetIsVehicleEngineRunning(vehicle)), false, true)
+  end
+else if item == door1 then
   local ped = PlayerPedId()
   local veh = GetVehiclePedIsIn(ped, false)
 if veh ~= nil and veh ~= 0 and veh ~= 1 then
@@ -809,6 +809,7 @@ if veh ~= nil and veh ~= 0 and veh ~= 1 then
       SetVehicleDoorShut(veh, 5, false)
   else
       SetVehicleDoorOpen(veh, 5, false, false)
+        end
       end
     end
   end
