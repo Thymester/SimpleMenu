@@ -2,7 +2,7 @@
 
 INSTALL INSTRUCTIONS:
 
-  1: Download the Menu from FiveM Forums: https://forum.fivem.net/t/simplemenu-uses-requires-nativeui-lua/324733
+  1: Download the Menu from [FiveM Forums](https://forum.fivem.net/t/simplemenu-uses-requires-nativeui-lua/324733)
   
   2: Drag & Drop the two folders into resources
   
