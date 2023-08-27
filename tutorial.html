@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SimpleMenu</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #332d2d;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #000000;
+            margin: 20px 0;
+        }
+        p {
+            text-align: center;
+            line-height: 1.6;
+            color: #ffffff;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #00438a;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #302e2e;
+        }
+        .section-title {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .code {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            padding: 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SimpleMenu Tutorial</h1>
+        <hr>
+
+        <div class="section">
+            <h2>SimpleMenu</h2>
+            <hr>
+        </div>
+
+        <div class="section">
+            <h1>How to Get Emergency Services Vehicle List</h1>
+            <hr>
+            <p>1: Uncomment Lines 453 - 458</p>
+        </div>
+
+        <div class="section">
+            <h1>Install Instructions:</h1>
+            <hr>
+            <p>1: Download the Menu from FiveM Forums: <a href="https://forum.fivem.net/t/simplemenu-now-with-ace-permissions-now-fully-released-lua/324733" title="SimpleMenu Download">SimpleMenu</a></p>
+            <p>2: Drag & Drop the two folders into resources</p>
+            <p>3: In order do the following:</p>
+            <p><code>start NativeUI</code><br><code>start SimpleMenu</code></p>
+            <p>4: Do not change the name of any folders to maintain case sensitivity in <code>server.cfg</code></p>
+            <p><em>- You may use this in any private or public project!</em></p>
+        </div>
+
+        <div class="section">
+            <h2>Changelog</h2>
+            <hr>
+            <p><b>Visit Releases at GitHub for Releases!</b></p>
+        </div>
+
+        <div class="section">
+            <h1>To add Permissions to any given person do the following.</h1>
+            <hr>
+            <p># SimpleMenu Group</p>
+            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here</code></p>
+            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.state allow --Name of Person Here</code></p>
+            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.highway allow --Name of Person Here</code></p>
+            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.sheriff allow --Name of Person Here</code></p>
+            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.emt allow --Name of Person Here</code></p>
+            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of Person Here</code></p>
+        </div>
+
+        <div class="section">
+            <h1>How to ONLY allow Admins to Open the Menu</h1>
+            <hr>
+            <p>1: Go to line 1871</p>
+            <p>2: Uncomment lines 1871 - 1881</p>
+            <p><em>NOTE: To uncomment, remove "<!--" and "-->"</em></p>
+        </div>
+
+        <div class="section">
+            <h1>How to add Emergency Services Cars</h1>
+            <hr>
+            <p>1: Go to lines 386 - 406</p>
+            <p>2: Add Emergency Services spawn codes (On your server) to be able to spawn them in-game</p>
+            <p>3: Must reload script after changes</p>
+        </div>
+
+        <div class="section">
+            <h1>How to get Emergency Loadouts</h1>
+            <hr>
+            <p>1: Go to 452 - 457</p>
+            <p>2: Uncomment those lines by removing the two "--" before each <code>submenu:AddItem()</code></p>
+        </div>
+
+        <div class="section">
+            <h1>How to get Addon Peds</h1>
+            <hr>
+            <p>1: Go to line 1681 and uncomment it</p>
+            <p>2: Go to line 1683 and uncomment it</p>
+            <p>3: Go to line 1689 and uncomment it which is commented from 1689 - 1693 (Remove "<!--" and "-->")</p>
+            <p>To add the Custom Peds and Custom Cars, follow the templates located on lines 310 & 1234</p>
+        </div>
+
+        <div class="section">
+            <h1>Ace Permissions are added to the following.</h1>
+            <hr>
+            <p>1: Healing</p>
+            <p>2: Armour Giving</p>
+            <p>3: Godmode</p>
+            <p>4: Invisibility</p>
+            <p><em>NOTE: There may or may not be more added from updates.</em></p>
+        </div>
+
+        <div class="section">
+            <h1>How to enable Custom Car & Ped Spawning</h1>
+            <hr>
+            <p>For Custom Car Spawns</p>
+            <p>1: Uncomment lines 385 & 387 (To uncomment, remove "--")</p>
+            <p>2: Uncomment lines 393 - 397 (To uncomment, remove "<!--" and "-->")</p>
+            <p>For Custom Ped Spawns</p>
+            <p>1: Uncomment lines 1286 & 1288 (To uncomment, remove "--")</p>
+            <p>2: Uncomment lines 1294 - 1298 (To uncomment, remove "<!--" and "-->")</p>
+            <p>To add the Custom Peds and Custom Cars, follow the templates located on lines 310 & 1234</p>
+        </div>
+
+        <div class="section">
+            <h1>NOTE:</h1>
+            <hr>
+            <p><a href="https://github.com/FrazzIe/NativeUILua" title="NativeUI Download">NativeUI Download Link</a></p>
+            <p><em>NativeUI is from Frazzle, not myself. If you wish to download the files located on GitHub (SimpleMenu & NativeUI), they are NOT in a drag & drop format!</em></p>
+        </div>
+    </div>
+</body>
+</html>
