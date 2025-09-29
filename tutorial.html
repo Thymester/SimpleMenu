@@ -1,70 +1,312 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SimpleMenu</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleMenu - Modern FiveM Admin Menu</title>
     <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f7f7f7;
+        * {
             margin: 0;
             padding: 0;
-            color: #333333;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e0e6ed;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #332d2d;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
         }
-        h1, h2 {
+
+        .hero {
             text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(45deg, rgba(0,123,255,0.1), rgba(40,167,69,0.1));
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
             margin-bottom: 10px;
-            color: #ffffff;
+            background: linear-gradient(45deg, #007bff, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        hr {
-            border: none;
-            border-top: 1px solid #000000;
-            margin: 20px 0;
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
         }
-        p {
+
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .nav-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .nav-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 25px;
             text-align: center;
-            line-height: 1.6;
-            color: #ffffff;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
         }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .nav-card h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+
+        .section h1, .section h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .section h3 {
+            color: #28a745;
+            margin: 25px 0 15px 0;
+            font-size: 1.3rem;
+        }
+
+        .section p {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: #007bff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .install-steps {
+            counter-reset: step;
+        }
+
+        .install-step {
+            counter-increment: step;
+            background: rgba(40,167,69,0.1);
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .install-step::before {
+            content: counter(step);
+            position: absolute;
+            left: -20px;
+            top: 20px;
+            background: #28a745;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .permission-group {
+            background: rgba(255,193,7,0.1);
+            border: 1px solid rgba(255,193,7,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .permission-group h4 {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            background: rgba(220,53,69,0.1);
+            border: 1px solid rgba(220,53,69,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning::before {
+            content: "⚠️ ";
+            font-size: 1.2rem;
+        }
+
+        .info {
+            background: rgba(23,162,184,0.1);
+            border: 1px solid rgba(23,162,184,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info::before {
+            content: "ℹ️ ";
+            font-size: 1.2rem;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,123,255,0.3);
+        }
+
         a {
             color: #007bff;
             text-decoration: none;
             transition: color 0.3s;
         }
+
         a:hover {
             color: #00438a;
         }
-        .section {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #302e2e;
+
+        hr {
+            border: none;
+            border-top: 2px solid rgba(255,255,255,0.1);
+            margin: 20px 0;
         }
-        .section-title {
-            font-size: 24px;
-            color: #555;
-            margin-bottom: 15px;
-        }
-        .code {
+
+        code {
+            background: #1a1a1a;
+            color: #e0e6ed;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-family: 'Courier New', monospace;
-            background-color: #f5f5f5;
-            padding: 5px;
-            border-radius: 3px;
+        }
+
+        em {
+            color: #28a745;
+            font-style: italic;
+        }
+
+        b, strong {
+            color: #ffc107;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>SimpleMenu Tutorial</h1>
-        <hr>
+        <div class="hero">
+            <div class="version-badge">SimpleMenu Tutorial</div>
+            <h1>SimpleMenu</h1>
+            <p>Advanced FiveM Server Administration Menu</p>
+            <p>Vehicle Spawning • Player Management • Permission System • Emergency Services</p>
+            <a href="#installation" class="download-btn">Get Started</a>
+            <a href="https://forum.fivem.net/t/simplemenu-now-with-ace-permissions-now-fully-released-lua/324733" class="download-btn">Download</a>
+        </div>
+
+        <div class="nav-cards">
+            <div class="nav-card" onclick="scrollToSection('installation')">
+                <h3>📦 Installation</h3>
+                <p>Quick setup guide for your FiveM server</p>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('permissions')">
+                <h3>🔐 Permissions</h3>
+                <p>Configure ACE permissions and roles</p>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('configuration')">
+                <h3>⚙️ Configuration</h3>
+                <p>Customize vehicles, peds, and features</p>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('emergency')">
+                <h3>🚑 Emergency Services</h3>
+                <p>Vehicle lists and loadouts</p>
+            </div>
+        </div>
 
         <div class="section">
             <h2>SimpleMenu</h2>
@@ -72,21 +314,21 @@
         </div>
 
         <div class="section">
-            <h1>How to Get Emergency Services Vehicle List</h1>
+            <h1>How to get Emergency Services Vehicle List</h1>
             <hr>
-            <p>1: Uncomment Lines 453 - 458</p>
+            <p>1: Uncomment Lines 453 --> 458</p>
         </div>
 
-        <div class="section">
-            <h1>Install Instructions:</h1>
+        <section id="installation" class="section">
+            <h1>INSTALL INSTRUCTIONS:</h1>
             <hr>
             <p>1: Download the Menu from FiveM Forums: <a href="https://forum.fivem.net/t/simplemenu-now-with-ace-permissions-now-fully-released-lua/324733" title="SimpleMenu Download">SimpleMenu</a></p>
             <p>2: Drag & Drop the two folders into resources</p>
-            <p>3: In order do the following:</p>
-            <p><code>start NativeUI</code><br><code>start SimpleMenu</code></p>
-            <p>4: Do not change the name of any folders to maintain case sensitivity in <code>server.cfg</code></p>
-            <p><em>- You may use this in any private or public project!</em></p>
-        </div>
+            <p>3: In order do the following</p>
+            <div class="code-block" data-lang="cfg">start NativeUI<br>start SimpleMenu</div>
+            <p>4: Do not change the name of any of the folders to make it easier. server.cfg is case sensitive</p>
+            <p><em>* - If you wish you may use this in any private or public project!</em></p>
+        </section>
 
         <div class="section">
             <h2>Changelog</h2>
@@ -94,39 +336,34 @@
             <p><b>Visit Releases at GitHub for Releases!</b></p>
         </div>
 
-        <div class="section">
+        <section id="permissions" class="section">
             <h1>To add Permissions to any given person do the following.</h1>
             <hr>
             <p># SimpleMenu Group</p>
-            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here</code></p>
-            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.state allow --Name of Person Here</code></p>
-            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.highway allow --Name of Person Here</code></p>
-            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.sheriff allow --Name of Person Here</code></p>
-            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.emt allow --Name of Person Here</code></p>
-            <p><code>add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of Person Here</code></p>
-        </div>
+            <div class="code-block" data-lang="cfg">add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here<br>add_ace identifier.steam:[Steam HEX Here] simplemenu.state allow --Name of Person Here<br>add_ace identifier.steam:[Steam HEX Here] simplemenu.highway allow --Name of Person Here<br>add_ace identifier.steam:[Steam HEX Here] simplemenu.sheriff allow --Name of Person Here<br>add_ace identifier.steam:[Steam HEX Here] simplemenu.emt allow --Name of Person Here<br>add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of Person Here</div>
+        </section>
 
         <div class="section">
             <h1>How to ONLY allow Admins to Open the Menu</h1>
             <hr>
             <p>1: Go to line 1871</p>
-            <p>2: Uncomment lines 1871 - 1881</p>
-            <p><em>NOTE: To uncomment, remove "<!--" and "-->"</em></p>
+            <p>2: Uncomment lines 1871 –> 1881</p>
+            <p><em>NOTE: To uncomment take out "–[[" and "]]"</em></p>
         </div>
 
-        <div class="section">
+        <section id="emergency" class="section">
             <h1>How to add Emergency Services Cars</h1>
             <hr>
-            <p>1: Go to lines 386 - 406</p>
-            <p>2: Add Emergency Services spawn codes (On your server) to be able to spawn them in-game</p>
+            <p>1: Go to lines 386 –> 406</p>
+            <p>2: When you go there add the Emergency Services spawn codes (On your server) to be able to spawn them in-game</p>
             <p>3: Must reload script after changes</p>
-        </div>
+        </section>
 
         <div class="section">
             <h1>How to get Emergency Loadouts</h1>
             <hr>
-            <p>1: Go to 452 - 457</p>
-            <p>2: Uncomment those lines by removing the two "--" before each <code>submenu:AddItem()</code></p>
+            <p>1: Go to 452 –> 457</p>
+            <p>2: Uncomment those lines by removing the two "–" before each 'submenu:AddItem()'</p>
         </div>
 
         <div class="section">
@@ -134,11 +371,10 @@
             <hr>
             <p>1: Go to line 1681 and uncomment it</p>
             <p>2: Go to line 1683 and uncomment it</p>
-            <p>3: Go to line 1689 and uncomment it which is commented from 1689 - 1693 (Remove "<!--" and "-->")</p>
-            <p>To add the Custom Peds and Custom Cars, follow the templates located on lines 310 & 1234</p>
+            <p>3: Go to line 1689 and uncomment it which is commented from 1689 –> 1693 (Remove "–[[" and "]]")</p>
         </div>
 
-        <div class="section">
+        <section id="configuration" class="section">
             <h1>Ace Permissions are added to the following.</h1>
             <hr>
             <p>1: Healing</p>
@@ -146,26 +382,48 @@
             <p>3: Godmode</p>
             <p>4: Invisibility</p>
             <p><em>NOTE: There may or may not be more added from updates.</em></p>
-        </div>
+        </section>
 
         <div class="section">
             <h1>How to enable Custom Car & Ped Spawning</h1>
             <hr>
             <p>For Custom Car Spawns</p>
-            <p>1: Uncomment lines 385 & 387 (To uncomment, remove "--")</p>
-            <p>2: Uncomment lines 393 - 397 (To uncomment, remove "<!--" and "-->")</p>
+            <p>1: Uncomment lines 385 & 387 (To uncomment remove "–")</p>
+            <p>2: Uncomment lines 393 -> 397 (To uncomment remove "–[[" and "]]")</p>
             <p>For Custom Ped Spawns</p>
-            <p>1: Uncomment lines 1286 & 1288 (To uncomment, remove "--")</p>
-            <p>2: Uncomment lines 1294 - 1298 (To uncomment, remove "<!--" and "-->")</p>
-            <p>To add the Custom Peds and Custom Cars, follow the templates located on lines 310 & 1234</p>
+            <p>1: Uncomment lines 1286 & 1288 (To uncomment remove "–")</p>
+            <p>2: Uncomment lines 1294 -> 1298 (To uncomment remove "–[[" and "]]")</p>
+            <p>To add the Custom Peds and Custom Cars follow the templates located on lines 310 & 1234</p>
         </div>
 
         <div class="section">
             <h1>NOTE:</h1>
             <hr>
+            <p>NativeUI is from Frazzle not myself, if you wish to download the files located on GitHub (SimpleMenu & NativeUI) it is NOT in a drag & drop format!</p>
             <p><a href="https://github.com/FrazzIe/NativeUILua" title="NativeUI Download">NativeUI Download Link</a></p>
-            <p><em>NativeUI is from Frazzle, not myself. If you wish to download the files located on GitHub (SimpleMenu & NativeUI), they are NOT in a drag & drop format!</em></p>
         </div>
     </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
