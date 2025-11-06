@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleMenu Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin: 20px 0;
+            color: #667eea;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .section {
+            background: rgba(45, 55, 72, 0.8);
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .section h1 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        p, li {
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        a {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: #00ff88;
+            text-decoration: underline;
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.5), transparent);
+            margin: 20px 0;
+        }
+
+        .note {
+            background: rgba(255, 165, 0, 0.1);
+            border-left: 4px solid #ffa500;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SimpleMenu Tutorial</h1>
+        </div>
+
+        <div class="section">
+            <h2>SimpleMenu</h2>
+        </div>
+
+        <div class="section">
+            <h1>How to get Emergency Services Vehicle List</h1>
+            <p>1: Uncomment Lines 453 --> 458</p>
+        </div>
+
+        <div class="section">
+            <h1>INSTALL INSTRUCTIONS:</h1>
+            <p>1: Download the Menu from FiveM Forums: <a href="https://forum.fivem.net/t/simplemenu-now-with-ace-permissions-now-fully-released-lua/324733" title="SimpleMenu Download">SimpleMenu</a></p>
+            <p>2: Drag & Drop the two folders into resources</p>
+            <p>3: In order do the following</p>
+            <div class="code-block">
+                start NativeUI<br>
+                start SimpleMenu
+            </div>
+            <p>4: Do not change the name of any of the folders to make it easier. server.cfg is case sensitive</p>
+            <p>* - If you wish you may use this in any private or public project!</p>
+        </div>
+
+        <div class="section">
+            <h2>Changelog</h2>
+            <p><b>Visit Releases at GitHub for Releases!</b></p>
+        </div>
+
+        <div class="section">
+            <h1>To add Permissions to any given person do the following.</h1>
+            <p># SimpleMenu Group</p>
+            <div class="code-block">
+                add_ace identifier.steam:[Steam HEX Here] simplemenu.admin allow --Name of Person Here<br>
+                add_ace identifier.steam:[Steam HEX Here] simplemenu.state allow --Name of Person Here<br>
+                add_ace identifier.steam:[Steam HEX Here] simplemenu.highway allow --Name of Person Here<br>
+                add_ace identifier.steam:[Steam HEX Here] simplemenu.sheriff allow --Name of Person Here<br>
+                add_ace identifier.steam:[Steam HEX Here] simplemenu.emt allow --Name of Person Here<br>
+                add_ace identifier.steam:[Steam HEX Here] simplemenu.emergency allow --Name of Person Here
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>How to ONLY allow Admins to Open the Menu</h1>
+            <p>1: Go to line 1871</p>
+            <p>2: Uncomment lines 1871 –> 1881</p>
+            <p>NOTE: To uncomment take out "--[[" and "]]"</p>
+        </div>
+
+        <div class="section">
+            <h1>How to add Emergency Services Cars</h1>
+            <p>1: Go to lines 386 –> 406</p>
+            <p>2: When you go there add the Emergency Services spawn codes (On your server) to be able to spawn them in-game</p>
+            <p>3: Must reload script after changes</p>
+        </div>
+
+        <div class="section">
+            <h1>How to get Emergency Loadouts</h1>
+            <p>1: Go to 452 –> 457</p>
+            <p>2: Uncomment those lines by removing the two "--" before each 'submenu:AddItem()</p>
+        </div>
+
+        <div class="section">
+            <h1>How to get Addon Peds</h1>
+            <p>1: Go to line 1681 and uncomment it</p>
+            <p>2: Go to line 1683 and uncomment it</p>
+            <p>3: Go to line 1689 and uncomment it which is commented from 1689 –> 1693 (Remove "--[[" and "]]")</p>
+        </div>
+
+        <div class="section">
+            <h1>Ace Permissions are added to the following.</h1>
+            <p>1: Healing</p>
+            <p>2: Armour Giving</p>
+            <p>3: Godmode</p>
+            <p>4: Invisibility</p>
+            <p>NOTE: There may or may not be more added from updates.</p>
+        </div>
+
+        <div class="section">
+            <h1>How to enable Custom Car & Ped Spawning</h1>
+            <p>For Custom Car Spawns</p>
+            <p>1: Uncomment lines 385 & 387 (To uncomment remove "--")</p>
+            <p>2: Uncomment lines 393 -> 397 (To uncomment remove "--[[" and "]]")</p>
+            <p>For Custom Ped Spawns</p>
+            <p>1: Uncomment lines 1286 & 1288 (To uncomment remove "--")</p>
+            <p>2: Uncomment lines 1294 -> 1298 (To uncomment remove "--[[" and "]]")</p>
+            <p>To add the Custom Peds and Custom Cars follow the templates located on lines 310 & 1234</p>
+        </div>
+
+        <div class="section note">
+            <h1>NOTE:</h1>
+            <p>NativeUI is from Frazzle not myself, if you wish to download the files located on GitHub (SimpleMenu & NativeUI) it is NOT in a drag & drop format!</p>
+            <p><a href="https://github.com/FrazzIe/NativeUILua" title="NativeUI Download">NativeUI Download Link</a></p>
+        </div>
+    </div>
+</body>
+</html>

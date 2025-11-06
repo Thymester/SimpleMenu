@@ -61,11 +61,32 @@ AddEventHandler("highway:getIsHighway", function()
     end
 end)
 
-function SendWebhookMessage(webhook,message)
-    if webhook ~= "false" then
-        PerformHttpRequest(webhook, function(err, text, headers) end, 'POST', json.encode({content = message}), { ['Content-Type'] = 'application/json' })
-    end
-end
+local CurrentVersion = 'v1.4'
+local GithubResourceName = 'SimpleMenu'
+
+PerformHttpRequest('https://raw.githubusercontent.com/Thymester/SimpleMenu/master/version.lua', function(Error, NewestVersion, Header)
+	PerformHttpRequest('https://raw.githubusercontent.com/Thymester/SimpleMenu/master/CHANGES.md', function(Error, Changes, Header)
+		print('\n')
+		print('###########################################################')
+		print('------------------------')
+        print('SimpleMenu')
+        print('------------------------')
+        print('NativeUI is a Dependency')
+        print('------------------------\n')
+		print('Current Version: ' .. CurrentVersion)
+		print('Newest Version: ' .. NewestVersion)
+		io.write("")
+		print('Changelog: \n\n' .. Changes)
+		print('###########################################################')
+		if CurrentVersion ~= NewestVersion then
+			print('')
+		else
+			print('-- Up to date!')
+			print('--------------')
+		end
+		print('\n')
+end)
+end)
 
 function mysplit(inputstr, sep)
     if sep == nil then

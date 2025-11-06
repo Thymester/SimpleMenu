@@ -4,11 +4,18 @@ dependency 'NativeUI'
 
 client_scripts {
     "@NativeUI/NativeUI.lua",
+    "config/config.lua",
+    "utils/utils.lua",
+    "menus/admin.lua",
+    "menus/emergency.lua",
+    "menus/cars.lua",
+    "menus/player.lua",
+    "menus/teleport.lua",
+    "menus/civilian.lua",
+    "menus/close.lua",
     "SimpleMenu.lua",
 }
 
 server_scripts {
     "perms/perms.lua",
 }
-
-client_scripts "SimpleMenu.lua"
